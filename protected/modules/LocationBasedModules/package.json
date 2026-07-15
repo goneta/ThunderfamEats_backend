@@ -1,0 +1,28 @@
+{
+	"name": "Karenderia Location-Based Service Search Addon",
+	"version": "1.0.0",
+    "uuid" : "TzePRE/GkRfm0A+N+MpLr+Vxk6jY539mH8EFGM/PDXGLT2HBZYd0UTwI7+pmhhWsScviRvzrE9FvCoTVuxZ3x0jV5U6VtgKBkZiZewgg/UiuXFhKgZ0a8PYb50dTLQ==",
+	"image": "location-based_banner.png",
+	"file":[        
+        {
+            "action": "copy",
+            "file": "front-locations.js",
+            "to": "assets/js/front-locations.js"
+        },                
+        {
+            "action": "copy",
+            "file": "ApilocationsController.php",
+            "to": "protected/controllers/ApilocationsController.php"
+        },
+        {
+            "action": "copy",
+            "file": "AppIdentity.php",
+            "to": "protected/components/AppIdentity.php"
+        },
+        {
+            "action": "copy",
+            "file": "Clocations.php",
+            "to": "backoffice/protected/components/Clocations.php"
+        }
+    ]
+}

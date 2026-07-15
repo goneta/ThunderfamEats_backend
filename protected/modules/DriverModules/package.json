@@ -1,0 +1,18 @@
+{
+	"name": "Driver app",
+	"version": "1.0.2",
+    "uuid" : "7EewaLXhXX50fWBCC+Gg3r4M4UpUwi6CWtH+y/GHPjC6bcd66lXfETwz7nO/5HYmkcmNURCAov8Vgg==",
+	"image": "rider_banner.png",
+	"file":[        
+        {
+            "action": "copy",
+            "file": "AppDriverIdentity.php",
+            "to": "protected/components/AppDriverIdentity.php"
+        },                
+        {
+            "action": "extract",
+            "file": "files.zip",
+            "to": "protected/controllers"
+        }
+    ]
+}

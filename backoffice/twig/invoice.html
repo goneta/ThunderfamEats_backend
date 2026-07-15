@@ -1,0 +1,120 @@
+<html>
+<body>
+
+<table class="collapse" style="width:100%;">
+  <tr>
+    <td valign="middle" align="left">      
+      <img src="{{site.logo}}" style="max-width:200px;max-height:100px;">
+    </td>
+    <td valign="middle" align="right" >
+        <h3 style="margin:0;padding:0;">{{site.title}}</h3>
+        <p style="margin:0;padding:0;">{{site.address}}</p>
+    </td>
+  </tr> 
+
+  <tr>
+    <td colspan="2"></td>
+  </tr>
+
+  <tr>
+    <td colspan="2" valign="top" align="left">
+      <div style="padding:10px;background:#f5f7fa;">
+        <table class="collapse" style="width:100%;" >
+            <tr>
+                <td valign="middle" align="left">
+                    <p style="margin:0;padding:0;">{{label.invoice_number}}: {{items.invoice_number}}</p>
+                    <p style="margin:0;padding:0;">{{label.invoice_date}}: {{items.invoice_date}}</p>
+                    <p style="margin:0;padding:0;">{{label.amount_due}}: {{items.due_date}}</p>
+                </td>            
+                <td valign="middle" align="right" >
+                   <div style="padding:10px;background:#2196f3;display: inline;color:#fff;padding:8px;border-radius: 10px;">
+                    {{items.payment_status}}
+                   </div>
+                   <h3 style="margin:0;padding:0;font-size: 22px;">{{items.amount_due}}</h3>
+                   <div style="margin:0;padding:0;font-weight: bold;">{{label.amount_due}}</div>
+                </td>
+            </tr>
+          </table>  
+      </div>
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2"></td>
+  </tr>
+
+  <tr>
+    <td colspan="2" valign="top" align="left" >
+        <h4 style="margin:0;padding:0;">{{label.billto}}</h4>
+        <p style="margin:0;padding:0;">{{items.restaurant_name}}</p>
+        <div style="width:30%;">
+            <p style="margin:0;padding:0;">{{items.business_address}}</p>
+        </div>
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2"></td>
+  </tr>
+
+  <tr>
+    <td colspan="2" valign="top" align="left">
+        <div style="padding:5px;background:#eaeced;">
+        <table class="collapse" style="width:100%;" >
+            <tr >
+                <td>{{label.description}}</td>
+                <td style="width:25%;" align="right">{{label.total}}</td>
+            </tr>
+        </table>
+       </div>
+    </td>    
+  </tr>
+
+  <tr>
+    <td colspan="2" valign="top" align="left">
+        <table class="collapse" style="width:100%;" >
+            <tr >
+                <td>{{items.description}}</td>
+                <td style="width:25%;" align="right">{{items.invoice_total}}</td>
+            </tr>
+            <tr>
+                <td colspan="2"><div style="border-bottom:thin solid #eaeced;"></div></td>
+            </tr>
+        </table>
+    </td>
+  </tr>
+
+  <tr>
+    <td  valign="top" align="left" ></td>
+    <td valign="top" align="left" style="width:50%;" >
+        <table class="collapse" style="width:100%;" >
+            <tr>
+                <td align="left">{{label.subtotal}}</td>
+                <td style="width:50%;" align="right">{{items.subtotal}}</td>
+            </tr>
+            <tr>
+                <td colspan="2"><div style="border-bottom:thin solid #eaeced;"></div></td>
+            </tr>
+            <tr>
+                <td align="left">{{label.total}}</td>
+                <td style="width:50%;" align="right">{{items.total}}</td>
+            </tr>
+            <tr>
+                <td align="left">{{label.amount_paid}}</td>
+                <td style="width:50%;" align="right">{{items.amount_paid}}</td>
+            </tr>
+            <tr>
+                <td colspan="2"><div style="border-bottom:thin solid #eaeced;"></div></td>
+            </tr>
+            <tr>
+                <td align="left" style="font-weight:bold;">{{label.amount_due}}</td>
+                <td style="width:50%;font-weight:bold;" align="right">{{items.amount_due}}</td>
+            </tr>
+        </table>
+    </td>
+  </tr>
+     
+</table>
+
+</body>
+</html>

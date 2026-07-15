@@ -1,0 +1,5 @@
+{
+    "require": {
+        "smsglobal/smsglobal-php": "^1.2"
+    }
+}

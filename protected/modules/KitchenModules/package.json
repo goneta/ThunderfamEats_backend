@@ -1,0 +1,18 @@
+{
+	"name": "Karenderia Kitchen App",
+	"version": "1.0.1",
+    "uuid" : "REXUdMpCw9wpB/lbEEmKvpP/DBjUd3k8yM9Ax9AJCC6XW/M6RRmTfJb+BQdqC8y6lMeL3etu45KNBFW2ybOSNGf23pDCtg==",
+	"image": "kitchen_banner.png",
+	"file":[        
+        {
+            "action": "copy",
+            "file": "AppKitchenIdentity.php",
+            "to": "protected/components/AppKitchenIdentity.php"
+        },                
+        {
+            "action": "copy",
+            "file": "ApikitchenController.php",
+            "to": "protected/controllers/ApikitchenController.php"
+        }
+    ]
+}

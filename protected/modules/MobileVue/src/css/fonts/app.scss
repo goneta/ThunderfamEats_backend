@@ -1,0 +1,431 @@
+// app global css in SCSS form
+
+@font-face {
+  font-family: "Nunito";
+  src: url("./fonts/Nunito-ExtraLight.ttf");
+  font-weight: 200;
+}
+
+@font-face {
+  font-family: "Nunito";
+  src: url("./fonts/Nunito-Light.ttf");
+  font-weight: 300;
+}
+
+@font-face {
+  font-family: "Nunito";
+  src: url("./fonts/Nunito-Regular.ttf");
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: "Nunito";
+  src: url("./fonts/Nunito-Medium.ttf");
+  font-weight: 500;
+}
+
+@font-face {
+  font-family: "Nunito";
+  src: url("./fonts/Nunito-SemiBold.ttf");
+  font-weight: 600;
+}
+
+@font-face {
+  font-family: "Nunito";
+  src: url("./fonts/Nunito-Bold.ttf");
+  font-weight: 700;
+}
+
+@font-face {
+  font-family: "Nunito";
+  src: url("./fonts/Nunito-ExtraBold.ttf");
+  font-weight: 800;
+}
+
+body {
+  font-family: "Nunito";
+  color: #2a2d37;
+  background: #fff;
+}
+
+a {
+  text-decoration: none;
+}
+
+.border {
+  border: 1px solid red !important;
+}
+
+.borders {
+  border: 1px solid rgba(0, 0, 0, 0.12);
+}
+
+.top-toolbar .q-btn .q-icon:nth-child(3) {
+  color: #bdbdbd !important;
+}
+
+.h1,
+.h2,
+.h3,
+.h4,
+.h5,
+.h6,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  line-height: 1.2;
+  margin-bottom: 0.5rem;
+}
+
+h4 {
+  font-size: 1.4rem !important;
+  font-weight: 500;
+}
+
+.text-h5,
+h5,
+.btn-location span {
+  font-size: 16px !important;
+}
+
+.text-h6,
+h6 {
+  font-size: 14px !important;
+}
+
+.font11,
+.q-tab__label {
+  font-size: 11px;
+}
+.font12,
+.menutab .q-tab__label {
+  font-size: 12px;
+}
+
+.font13 {
+  font-size: 13px !important;
+}
+
+.height-normal,
+.line-normal {
+  line-height: normal;
+}
+
+.line-1 {
+  line-height: 1;
+}
+
+.min-height {
+  min-height: auto !important;
+}
+
+.w-25 {
+  width: 25%;
+}
+.w-50 {
+  width: 50%;
+}
+.w-75 {
+  width: 75%;
+}
+
+#card-track.fixed-w-50 {
+  width: 90% !important;
+  margin-bottom: 30px;
+  border-radius: 8px !important;
+}
+
+.badge-rounded {
+  height: 35px;
+  width: 35px;
+}
+
+.q-field--dense .q-field__label {
+  font-size: 12px !important;
+}
+.input-borderless.q-field--outlined .q-field__control::before {
+  border: none !important;
+}
+
+.btn-toogle-modified.q-btn-group--rounded {
+  border-radius: 10px;
+}
+
+.text-weight-600,
+.list-active {
+  font-weight: 600 !important;
+}
+
+.text-weight-200 {
+  font-weight: 200 !important;
+}
+
+.q-btn-group > .q-btn-item[aria-pressed="true"]:not(:last-child) {
+  border-top-right-radius: 28px;
+  border-bottom-right-radius: 28px;
+}
+.q-btn-group > .q-btn-item[aria-pressed="true"]:not(:first-child) {
+  border-top-left-radius: 28px;
+  border-bottom-left-radius: 28px;
+}
+
+.pl-0 {
+  padding-left: 0 !important;
+}
+.pr-0 {
+  padding-right: 0 !important;
+}
+
+.modified-qlist .q-item__section--avatar {
+  min-width: 40px !important;
+}
+.modified-qlist .q-separator--horizontal-item-inset {
+  margin-left: 52px;
+}
+
+.qlist-min-height .q-item {
+  min-height: 25px !important;
+}
+
+.map {
+  height: 150px;
+}
+
+.map.small {
+  height: 90px;
+}
+
+.map.xsmall {
+  height: 70px;
+}
+
+.map.medium {
+  height: 220px;
+}
+
+.qlist-item-min {
+  min-width: 30px;
+  width: 30px;
+}
+
+.tracking-steps .q-stepper__tab,
+.tracking-steps .q-stepper__step-inner {
+  padding: 0;
+}
+
+.rounded-borders-top {
+  border-top-left-radius: 20px !important;
+  border-top-right-radius: 20px !important;
+}
+
+.bg-mygrey {
+  background: #f2f2f2;
+}
+.text-mygrey {
+  color: #f2f2f2;
+}
+
+.bg-mygrey1 {
+  background: #f7f7f7;
+}
+.text-mygrey1 {
+  color: #f7f7f7;
+}
+
+.bg-input,
+.q-field--filled .q-field__control {
+  background: rgba(0, 0, 0, 0.05) !important;
+}
+.text-input {
+  color: #f6f5fa !important;
+}
+
+.bg-input-white,
+.q-field--filled .q-field__control {
+  background: #fff !important;
+}
+.text-input-white {
+  color: #fff !important;
+}
+
+.bg-myblue {
+  background: #0164c1;
+}
+.text-myblue {
+  color: #0164c1;
+}
+
+.bg-myblue1 {
+  background: #518df9;
+}
+.text-myblue1 {
+  color: #518df9;
+}
+
+.border-grey {
+  border: 1px solid rgba(0, 0, 0, 0.12);
+}
+.border-primary {
+  border: 1px solid #ff724c;
+}
+
+.border-green {
+  border: 1px solid #66bb6a;
+}
+
+.border-bottom {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+}
+
+.bg-primary1 {
+  background: #f6be70;
+}
+.text-primary1 {
+  color: #f6be70;
+}
+
+.bg-primary2 {
+  background: #f8c988;
+}
+.text-primary2 {
+  color: #f8c988;
+}
+.bg-primary3 {
+  background: #f9d4a0;
+}
+.text-primary3 {
+  color: #f9d4a0;
+}
+.bg-primary4 {
+  background: #fffbde;
+}
+.text-primary4 {
+  color: #fffbde;
+}
+
+.line-height-normal {
+  line-height: normal !important;
+}
+.line-height-one {
+  line-height: 1 !important;
+}
+
+.q-toolbar__title {
+  font-size: 14px;
+}
+
+.qlist-no-padding .q-item {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+.qlist-small.q-list--dense > .q-item {
+  padding: 0 !important;
+  min-height: auto !important;
+}
+
+.q-item-small {
+  padding-top: 2px !important;
+  padding-bottom: 2px !important;
+  padding-left: 25px !important;
+  min-height: auto !important;
+}
+
+.rounded-10,
+.radius10 {
+  border-radius: 10px !important;
+}
+
+.radius8 {
+  border-radius: 8px !important;
+}
+
+.radius28 {
+  border-radius: 28px !important;
+}
+
+.no-radius-top {
+  border-top-left-radius: 0 !important;
+  border-top-right-radius: 0 !important;
+}
+
+/*.track-order-details .q-dialog__inner {
+  height: 60%;
+}*/
+
+.margin-auto {
+  margin: auto !important;
+}
+
+.q-rating__icon {
+  text-shadow: none !important;
+}
+
+.timeline-modified .q-timeline__subtitle {
+  text-transform: none !important;
+  color: #2a2d37;
+  font-size: 13px;
+  margin: 0 !important;
+  padding: 0 !important;
+  line-height: normal !important;
+}
+
+.timeline-modified .q-timeline__title {
+  font-size: 12px !important;
+  color: #9e9e9e;
+  font-weight: 400;
+  line-height: normal !important;
+}
+.timeline-modified .q-timeline__dot .q-icon {
+  font-size: 18px !important;
+}
+.timeline-modified .q-timeline__content {
+  position: relative;
+}
+.timeline-modified .q-timeline__content .time {
+  position: absolute;
+  top: 0;
+  right: 10%;
+  font-size: 12px !important;
+  font-weight: 500;
+}
+
+.food-bg {
+  background-image: url("../assets/food-bg.png");
+  background-repeat: no-repeat;
+  background-position: top right;
+}
+
+.q-btn-group.rounded-group .q-btn {
+  border-radius: 20px !important;
+  margin-right: 10px;
+  padding-left: 20px;
+  padding-right: 20px;
+  line-height: normal;
+}
+
+.margin-negative-50 {
+  margin-top: -50px !important;
+}
+
+.curve {
+  border-radius: 20px 20px 0 0 !important;
+}
+
+.tab-active .q-tab__label {
+  color: #fff;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-radius: 10px;
+  background: #ffc107 !important;
+}
+
+.badge-small {
+  padding: 2px 5px;
+  line-height: 10px;
+  min-height: 10px;
+  font-size: 10px;
+}

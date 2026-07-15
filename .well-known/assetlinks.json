@@ -1,0 +1,15 @@
+[
+    {
+      "relation": [
+        "delegate_permission/common.handle_all_urls",
+        "delegate_permission/common.get_login_creds"
+      ],
+      "target": {
+        "namespace": "android_app",
+        "package_name": "com.thunderfameats.appforcustomers",
+        "sha256_cert_fingerprints": [
+          "2F:CA:EC:E6:C9:0F:AC:FA:64:73:9E:7B:B6:46:BD:DA:5A:AC:BC:AC:F3:22:F6:73:4C:A2:71:E6:0A:9A:27:4B"
+        ]
+      }
+    }
+  ]

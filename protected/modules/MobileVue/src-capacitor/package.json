@@ -1,0 +1,31 @@
+{
+  "name": "com.bastisapp.mobileapp3",
+  "version": "1.0.3",
+  "description": "Karenderia client app",
+  "author": "bastikikang@gmail.com",
+  "private": true,
+  "dependencies": {
+    "@awesome-cordova-plugins/location-accuracy": "^6.4.0",
+    "@capacitor-community/facebook-login": "^5.0.0",
+    "@capacitor-community/fcm": "^5.0.1",
+    "@capacitor-community/http": "^1.4.1",
+    "@capacitor/android": "^5.2.3",
+    "@capacitor/app": "^5.0.0",
+    "@capacitor/app-launcher": "^5.0.6",
+    "@capacitor/browser": "^5.0.6",
+    "@capacitor/camera": "^5.0.7",
+    "@capacitor/cli": "^5.0.0",
+    "@capacitor/core": "^5.0.0",
+    "@capacitor/device": "^5.0.6",
+    "@capacitor/filesystem": "^5.1.2",
+    "@capacitor/geolocation": "^5.0.6",
+    "@capacitor/network": "^5.0.6",
+    "@capacitor/push-notifications": "^5.0.6",
+    "@capacitor/share": "^5.0.6",
+    "@capacitor/splash-screen": "^5.0.6",
+    "@capacitor/toast": "^5.0.6",
+    "@codetrix-studio/capacitor-google-auth": "^3.3.2",
+    "cordova-plugin-inappbrowser": "^5.0.0",
+    "cordova-plugin-request-location-accuracy": "^2.3.0"
+  }
+}

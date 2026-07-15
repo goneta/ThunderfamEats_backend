@@ -1,0 +1,10 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Karenderia</string>
+    <string name="title_activity_main">Karenderia</string>
+    <string name="package_name">com.demo.karenderia</string>
+    <string name="custom_url_scheme">com.demo.karenderia</string>
+    <string name="facebook_app_id">361247692401530</string>
+    <string name="facebook_client_token">689406887a5c762366bf911f14226fcf</string>
+    <string name="server_client_id">46158489047-vptkm75h1okppmo5k0btqor6n8hki0dp.apps.googleusercontent.com</string>
+</resources>

@@ -1,0 +1,3 @@
+INSERT INTO `st_addons` ( `addon_name`, `uuid`, `version`, `activated`, `image`, `path`, `purchase_code`, `date_created`, `date_modified`, `ip_address`) VALUES
+('Karenderia Location-Based Service Search Addon', 'TzePRE/GkRfm0A+N+MpLr+Vxk6jY539mH8EFGM/PDXGLT2HBZYd0UTwI7+pmhhWsScviRvzrE9FvCoTVuxZ3x0jV5U6VtgKBkZiZewgg/UiuXFhKgZ0a8PYb50dTLQ==', '1', 1, 'location-based_banner.png', 'upload/all', '', NULL, '2024-09-12 01:11:17', '127.0.0.1');
+COMMIT;

@@ -1,0 +1,256 @@
+<html>
+<body>
+
+<style>
+/* table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+} */
+.items-table tbody td,
+.items-table thead th
+ {
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+</style>
+
+<table class="collapse" style="width:100%;">
+    <tr>
+        <td valign="middle" align="left">
+            <table class="collapse" >
+                <tr>
+                    <td valign="middle" align="left"  style="padding-right:10px;">
+                        <img src="{{site.logo}}" style="max-width:100px;max-height:100px;">
+                    </td>
+                    <td valign="middle" align="left">
+                        <h4 style="margin:0;padding:0;">{{site.title}}</h4>
+                        <p style="margin:0;padding:0;">{{site.address}}</p>
+                        <p style="margin:0;padding:0;">{{site.contact}} / {{site.email}}</p>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <div style="border-top: 1px solid #000; padding-top: 10px;"></div>
+        </td>
+    </tr>
+    <tr>
+        <td><div style="height: 10px;"></div></td>
+    </tr>
+    <tr>
+        <td>
+            <h3 style="margin:0;padding:0;">{{ items.restaurant_name }}</h3>
+            <p style="margin:0;padding:0;max-width:300px;">
+                {{ items.business_address }}
+            </p>
+        </td>
+    </tr>
+    <tr>
+        <td><div style="height: 10px;"></div></td>
+    </tr>
+    <tr>
+        <td>
+            <p style="margin:0;padding:0;">{{ label.invoice_data }}: {{ items.invoice_date }}</p>            
+            <p style="margin:0;padding:0;">{{ label.period }}: {{ items.period }}</p>            
+            <p style="margin:0;padding:0;">{{ label.invoice_number2 }}: {{ items.invoice_number }}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><div style="height: 10px;"></div></td>
+    </tr>
+    <tr>
+        <td>
+            <p style="margin:0;padding:0;">
+                {{ items.period_words }}
+            </p>
+        </td>
+    </tr>
+    <tr>
+        <td><div style="height: 10px;"></div></td>
+    </tr>
+    <tr>
+        <td>
+            <h3 style="margin:0;padding:0;">
+                {{ items.period_covered }}
+            </h3>            
+        </td>
+    </tr>
+    <tr>
+        <td><div style="height: 20px;"></div></td>
+    </tr>
+    <tr>
+        <td>            
+            {% if order_details.commission_based == 'subtotal' %}
+            <table class="items-table collapse" style="width:100%; border-collapse: collapse;">
+                <thead style="border-bottom: 2px solid #000;">
+                    <tr>
+                        <th valign="middle" align="left">{{ label.order_id}}</th>
+                        <th valign="middle" align="left">{{ label.date}}</th>
+                        <th valign="middle" align="left">{{ label.amount}}</th>
+                        <th valign="middle" align="left">{{ label.commission}}</th>
+                        <th valign="middle" align="left">{{ label.total}}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in order_details.items %}
+                    <tr>
+                        <td>{{ item.order_id }}</td>
+                        <td>{{ item.date_created }}</td>
+                        <td>{{ item.amount }}</td>
+                        <td>{{ item.commission }}</td>
+                        <td>{{ item.total }}</td>
+                    </tr>
+                    <tr>
+                        <td colspan="5">
+                            <div style="border-top: 1px solid #000;"></div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+                <thead style="border-bottom: 2px solid #000;">
+                    <tr>
+                        <th valign="middle" align="left">{{ label.total }}</th>
+                        <th valign="middle" align="left"></th>
+                        <th valign="middle" align="left">{{ order_details.total.amount }}</th>
+                        <th valign="middle" align="left"></th>
+                        <th valign="middle" align="left">{{ order_details.total.total }}</th>
+                    </tr>
+                </thead>
+            </table>
+            
+            {% elseif order_details.commission_based == 'method2' %}
+            
+            <table class="items-table collapse" style="width:100%; border-collapse: collapse;">
+                <thead style="border-bottom: 2px solid #000;">
+                    <tr>
+                        <th valign="middle" align="left">{{ label.order_id}}</th>
+                        <th valign="middle" align="left">{{ label.date}}</th>
+                        <th valign="middle" align="left">{{ label.order_amount }}</th>
+                        <th valign="middle" align="left">{{ label.commission_rate }}</th>
+                        <th valign="middle" align="left">{{ label.commission_amount }}</th>
+                        <th valign="middle" align="left">{{ label.commission_tax }}</th>
+                        <th valign="middle" align="left">{{ label.service_fee }}</th>
+                        <th valign="middle" align="left">{{ label.delivery_fee }}</th>
+                        <th valign="middle" align="left">{{ label.total }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in order_details.items %}
+                    <tr>
+                        <td>{{ item.order_id }}</td>
+                        <td>{{ item.date_created }}</td>
+                        <td>{{ item.amount }}</td>
+                        <td>{{ item.commission }}</td>
+                        <td>{{ item.commission_amount }}</td>
+                        <td>{{ item.commission_plus_tax }}</td>
+                        <td>{{ item.service_fee }}</td>
+                        <td>{{ item.delivery_fee }}</td>
+                        <td>{{ item.total }}</td>
+                    </tr>
+                    <tr>
+                        <td colspan="9">
+                            <div style="border-top: 1px solid #000;"></div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+                <thead style="border-bottom: 2px solid #000;">
+                    <tr>
+                        <th valign="middle" align="left">{{ label.total }}</th>
+                        <th valign="middle" align="left"></th>
+                        <th valign="middle" align="left">{{ order_details.total.amount }}</th>
+                        <th valign="middle" align="left"></th>
+                        <th valign="middle" align="left">{{ order_details.total.commission_amount_total }}</th>
+                        <th valign="middle" align="left">{{ order_details.total.commission_plus_tax_total }}</th>
+                        <th valign="middle" align="left">{{ order_details.total.service_fee_total }}</th>
+                        <th valign="middle" align="left">{{ order_details.total.delivery_fee_total }}</th>
+                        <th valign="middle" align="left">{{ order_details.total.total }}</th>
+                    </tr>
+                </thead>
+            </table>
+
+            {% elseif order_details.commission_based == 'method3' %}
+            
+            <table class="items-table collapse" style="width:100%; border-collapse: collapse;">
+                <thead style="border-bottom: 2px solid #000;">
+                    <tr>
+                        <th valign="middle" align="left">{{ label.order_id}}</th>
+                        <th valign="middle" align="left">{{ label.date}}</th>
+                        <th valign="middle" align="left">{{ label.order_amount }}</th>
+                        <th valign="middle" align="left">{{ label.commission_rate }}</th>
+                        <th valign="middle" align="left">{{ label.commission_amount }}</th>
+                        <th valign="middle" align="left">{{ label.commission_tax }}</th>
+                        <th valign="middle" align="left">{{ label.tax_service_fee }}</th>                        
+                        <th valign="middle" align="left">{{ label.total }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in order_details.items %}
+                    <tr>
+                        <td>{{ item.order_id }}</td>
+                        <td>{{ item.date_created }}</td>
+                        <td>{{ item.amount }}</td>
+                        <td>{{ item.commission }}</td>
+                        <td>{{ item.commission_amount }}</td>
+                        <td>{{ item.commission_plus_tax }}</td>
+                        <td>{{ item.tax_service_fee }}</td>                
+                        <td>{{ item.total }}</td>
+                    </tr>
+                    <tr>
+                        <td colspan="9">
+                            <div style="border-top: 1px solid #000;"></div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+                <thead style="border-bottom: 2px solid #000;">
+                    <tr>
+                        <th valign="middle" align="left">{{ label.total }}</th>
+                        <th valign="middle" align="left"></th>
+                        <th valign="middle" align="left">{{ order_details.total.amount }}</th>
+                        <th valign="middle" align="left"></th>
+                        <th valign="middle" align="left">{{ order_details.total.commission_amount_total }}</th>
+                        <th valign="middle" align="left">{{ order_details.total.commission_plus_tax_total }}</th>
+                        <th valign="middle" align="left">{{ order_details.total.tax_service_fee_total }}</th>                        
+                        <th valign="middle" align="left">{{ order_details.total.total }}</th>
+                    </tr>
+                </thead>
+            </table>
+
+
+            {% endif %}
+        </td>
+    </tr>
+    <tr>
+        <td><div style="height: 10px;"></div></td>
+    </tr>
+    <tr>
+        <td>
+            <p style="margin:0;padding:0;">{{ items.the_invoice_amount }}</p>
+            <p style="margin:0;padding:0;">{{ label.payment_information }}:</p>
+            <p style="margin:0;padding:0;">{{ label.the_balance }}</p>
+        </td>
+    </tr>
+    <tr>
+        <td><div style="height: 10px;"></div></td>
+    </tr>
+    <tr>
+        <td>
+            <p style="margin:0;padding:0;">{{ label.sincerely }},</p>            
+        </td>
+    </tr>
+    <tr>
+        <td><div style="height: 5px;"></div></td>
+    </tr>
+    <tr>
+        <td>
+            <p style="margin:0;padding:0;">- {{ site.title }}</p>            
+        </td>
+    </tr>
+</table>
+
+    
+</body>
+</html>

@@ -1,0 +1,8 @@
+
+INSERT INTO `st_addons` (`addon_name`, `uuid`, `version`, `activated`, `image`, `path`, `purchase_code`, `date_created`, `date_modified`, `ip_address`) VALUES
+('Viva Wallet', 'o2QINYEsaXBw4DHsImPrP7U4o0JmqFoixEkiuSbQrBbcT/8Ud00g4xehQ5Y+MtiJRrcsUATibjES2A==', '1.0.0', 1, 'vivawallet.png', 'upload/all', '', now(), now(), '127.0.0.1');
+
+
+INSERT INTO `st_payment_gateway` (`payment_name`, `payment_code`, `is_online`, `is_payout`, `is_plan`, `logo_type`, `logo_class`, `logo_image`, `path`, `status`, `sequence`, `is_live`, `attr_json`, `attr_json1`, `attr1`, `attr2`, `attr3`, `attr4`, `attr5`, `attr6`, `attr7`, `attr8`, `attr9`, `split`, `capture`, `date_created`, `date_modified`, `ip_address`) VALUES
+('Viva wallet', 'vivawallet', 1, 0, 0, 'image', '', 'a8147619-c1bc-11ed-84c3-9c5c8e164c2c.jpg', 'upload/all', 'active', 0, 0, '{\n	\"attr1\": {\n		\"label\": \"Client ID\"\n	},\n	\"attr2\": {\n		\"label\": \"Client Secret\"\n	},\n	\"attr3\": {\n		\"label\": \"Source Code web\"\n	}, \n	\"attr5\": {\n		\"label\": \"Merchant ID\"\n	},\n	\"attr6\": {\n		\"label\": \"API Key\"\n	},\n	\"attr7\": {\n		\"label\": \"Source Code mobile\"\n	}\n}', NULL, 'v38uq9dkav06kibmwmtep708tbfa2o0nk3283rc5t9a05.apps.vivapayments.com', 'F65FN1y7hc45wM5ZwkrGQ55C00Ni7B', '5100', '{\n	\"success_url\": \"{site_url}/vivawallet/api/verifypayment\",\n	\"failed_url\": \"{site_url}/vivawallet/api/failed\",\n	\"mobile_success_url\": \"{site_url}/vivawallet/apiapp/verifypayment\",\n	\"mobile_failed_url\": \"{site_url}/vivawallet/apiapp/failed\"\n}', 'ebab4259-4ab6-41df-8ef9-01e94b688e0b', 'CQ&|;P', '5100', '', NULL, 0, 0, '2023-03-13 15:24:33', '2023-03-14 03:09:28', '127.0.0.1');
+COMMIT;

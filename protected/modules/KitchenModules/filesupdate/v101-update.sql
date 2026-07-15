@@ -1,0 +1,3 @@
+UPDATE  st_addons SET version="1.0.1"
+WHERE uuid = "REXUdMpCw9wpB/lbEEmKvpP/DBjUd3k8yM9Ax9AJCC6XW/M6RRmTfJb+BQdqC8y6lMeL3etu45KNBFW2ybOSNGf23pDCtg==";
+COMMIT;

@@ -1,0 +1,23 @@
+{
+	"name": "Single app",
+	"version": "1.0.0",
+    "uuid" : "DXpn3kxHj8oVc64YvsHDTm2n6srn87gmcA2ZqXhgxI3dZ0cvYHh6UE8YXZQW/Xr2Mzf7svb3dPWaqg==",
+	"image": "singleapp_banner.png",
+	"file":[
+        {
+            "action": "copy",
+            "file": "filesupdate/front_main.txt",
+            "to": "protected/config/front_main.php"
+        },
+        {
+            "action": "copy",
+            "file": "AppUserIdentity.php",
+            "to": "protected/components/AppUserIdentity.php"
+        },        
+        {
+            "action": "extract",
+            "file": "files.zip",
+            "to": "protected/controllers"
+        }
+    ]
+}

@@ -1,0 +1,41 @@
+<?php return array(
+    'root' => array(
+        'pretty_version' => '1.0.0+no-version-set',
+        'version' => '1.0.0.0',
+        'type' => 'library',
+        'install_path' => __DIR__ . '/../../',
+        'aliases' => array(),
+        'reference' => NULL,
+        'name' => '__root__',
+        'dev' => true,
+    ),
+    'versions' => array(
+        '__root__' => array(
+            'pretty_version' => '1.0.0+no-version-set',
+            'version' => '1.0.0.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../../',
+            'aliases' => array(),
+            'reference' => NULL,
+            'dev_requirement' => false,
+        ),
+        'chillerlan/php-qrcode' => array(
+            'pretty_version' => '3.4.1',
+            'version' => '3.4.1.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../chillerlan/php-qrcode',
+            'aliases' => array(),
+            'reference' => '468603b687a5fe75c1ff33857a45f1726c7b95a9',
+            'dev_requirement' => false,
+        ),
+        'chillerlan/php-settings-container' => array(
+            'pretty_version' => '1.2.3',
+            'version' => '1.2.3.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../chillerlan/php-settings-container',
+            'aliases' => array(),
+            'reference' => '92636df53ad1bc903521d29993de0631e07ca931',
+            'dev_requirement' => false,
+        ),
+    ),
+);

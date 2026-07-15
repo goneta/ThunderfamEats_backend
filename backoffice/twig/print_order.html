@@ -1,0 +1,215 @@
+<html>
+<body>  
+
+<table class="collapse" style="width:100%;">
+ <tr>
+  <td style="background:#fef9ef;padding:20px 30px;">           
+    <img style="min-width:50px;height:50px;" src="{{receipt_logo}}">
+  </td>
+ </tr>
+ <tr>
+   <td valign="middle" align="center" style="padding:30px;">
+    <h2 style="margin:0;">{{receipt_thank_you}}</h2>
+   </td>
+ </tr>
+ 
+ <tr>
+  <td style="background:#fef9ef;">
+   <table style="width:100%" class="summary">
+     <tr>
+      <td style="width:50%;" valign="top">        
+        <table style="width:100%;">
+         <tr>
+          <td colspan="2"><h3>{{label.Summary}}</h3></td>          
+         </tr>
+         <tr>
+          <td style="width:35%;" valign="top">{{label.order_no}}:</td>
+          <td valign="top">{{order.order_info.order_id}}</td>
+         </tr>
+         <tr>
+          <td style="width:35%;" valign="top">{{label.place_on}}:</td>
+          <td valign="top">{{order.order_info.place_on}}</td>
+         </tr>
+         <tr>
+          <td style="width:35%;" valign="top">{{label.order_total}}:</td>
+          <td valign="top">{{total}}</td>
+         </tr>
+         <tr>
+          <td style="width:35%;" valign="top">{{label.delivery_date}}:</td>
+          <td valign="top" >
+           {% if order.order_info.whento_deliver=='now' %}
+		   {{order.order_info.schedule_at}}
+		   {% else %}
+		   {{order.order_info.schedule_at}}
+		   {% endif %}
+          </td>
+         </tr>
+        </table>
+      </td>
+      <td style="width:50%;" valign="top">       
+        <table style="width:100%;">
+         <tr>
+          <td colspan="2"><h3>{{label.delivery_address}}</h3></td>          
+         </tr>
+         <tr><td>{{order.order_info.customer_name}}</td></tr>
+         <tr><td>{{order.order_info.contact_number}}</td></tr>
+         <tr><td>{{order.order_info.delivery_address}}</td></tr>
+        </table>
+      </td>
+     </tr>
+   </table>   
+  </td>
+ </tr>
+ 
+ <tr>
+   <td>
+     <table style="width:100%"  class="items" >
+     <thead>
+     <tr>
+      <td style="width:50%;">{{label.items_ordered}}</td>
+      <td style="width:30%;">{{label.qty}}</td>
+      <td style="width:20%;">{{label.price}}</td>
+     </tr>
+     </thead>
+     <tr>
+      <td colspan="3" style="padding:0;"><div style="border-bottom:thin solid black;"></div></td>
+     </tr>
+     
+      {% for item in items %}
+     <tr>
+      <td>
+      <b>{{item.item_name}}</b>
+      {% if item.price.size_name %}
+      ({{item.price.size_name}})
+      {% endif %}
+      
+       <br/>
+      
+      {% if item.price.discount>0 %}
+        <del>{{item.price.pretty_price}}</del> {{item.price.pretty_price_after_discount}}
+      {% else %}
+         {{item.price.pretty_price}}
+      {% endif %}
+      
+       {% if item.item_changes=='replacement' %}
+       <br>Replacement
+       <br/>Replace "{{item.item_name_replace}}"      
+      {% endif %}
+      
+      {% if item.special_instructions %}
+       {{item.special_instructions}}
+      {% endif %}
+      
+      {% if item.attributes %}
+      <br/>
+         {% for attributes_key, attributes in item.attributes %}
+            {% for attributes_index, attributes_data in attributes %}
+              {{attributes_data}}
+                 {% if attributes_index<(attributes.length-1) %}
+                 ,
+                 {% endif %}
+            {% endfor %} 
+         {% endfor %}
+      {% endif %}
+      
+      </td>
+      <td style="padding:0 20px 0;">{{item.qty}}</td>
+      <td>
+       {% if item.price.discount>0 %}
+        {{ item.price.pretty_total_after_discount }}
+      {% else %}
+        {{ item.price.pretty_total }}
+      {% endif %}
+      </td>
+     </tr>      
+     
+    <!--ADDON-->
+    {% for index_addon, addons in item.addons %}
+    <tr>
+     <td colspan="3" style="padding:0 8px 0;"><b>{{addons.subcategory_name}}</b></td>     
+    </tr>
+        
+    {% for addon_items in addons.addon_items %}
+    <tr>
+     <td>{{addon_items.pretty_price}} {{addon_items.sub_item_name}}</td>
+     <td style="padding:0 20px 0;">{{addon_items.qty}}</td>
+     <td>{{addon_items.pretty_addons_total}}</td>
+    </tr>
+    {% endfor %}
+    
+    {% endfor %}
+    <!--ADDON-->
+    
+     <!-- ADDITIONAL CHARGE -->      
+    {% for item_charge in item.additional_charge_list %}
+    <tr>
+     <td><i>{{item_charge.charge_name}}</i></td>
+     <td></td>
+     <td>{{item_charge.pretty_price}}</td>
+    </tr>
+    {% endfor %}
+    <!-- ADDITIONAL CHARGE -->  
+    
+     
+     {% endfor %} <!--ITEMS-->
+     
+     <tr>
+      <td colspan="3" style="padding:0;"><div style="border-bottom:thin solid black;"></div></td>
+     </tr> 
+    
+     <!--SUMMARY-->    
+    {% for summary in summary %}    
+     <tr class="summary_order">
+      <td></td>
+      <td style="padding:0 20px 0;">
+      
+          {% if summary.type=='total'  %}  
+	       <b>{{summary.name}} : </b>
+	      {% else %}  
+	       {{summary.name}} :
+	      {% endif %}
+      
+      </td>
+      <td>
+      
+         {% if summary.type=='total'  %}  
+	     <b>{{summary.value}}</b>
+	     {% else %}  
+	     {{summary.value}}
+	     {% endif %}
+      
+      </td>
+     </tr> 
+     {% endfor %}      
+     <!--SUMMARY-->      
+    
+     
+     </table>
+   </td>
+ </tr>
+  
+ <tr>
+  <td style="background:#fef9ef;padding:20px 30px;">
+    
+    <table style="width:100%; table-layout: fixed;">
+	  <tr>
+	    <th colspan="3" style="text-align: left;"><h5>{{label.contact_us}}</h5></th>
+	    <th colspan="7" style="text-align: left;"><h5>{{label.information}}</h5></th>
+	  </tr>
+	  <tr>
+	    <td colspan="3" style="text-align: left; padding:0 3px;" valign="top">
+	     <p>{{site.address}}</p>
+         <p>{{site.contact}}</p>
+         <p>{{site.email}}</p
+	    </td>
+	    <td colspan="7" valign="top" style="padding:0 3px;"><p>{{receipt_footer}}</p></td>
+	  </tr>
+	</table>
+  
+  </td>
+ </tr>
+ 
+</table>
+
+</body>
+</html>

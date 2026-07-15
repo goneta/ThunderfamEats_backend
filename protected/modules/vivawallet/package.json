@@ -1,0 +1,13 @@
+{
+	"name": "Viva wallet",
+	"version": "1.0.0",
+    "uuid" : "o2QINYEsaXBw4DHsImPrP7U4o0JmqFoixEkiuSbQrBbcT/8Ud00g4xehQ5Y+MtiJRrcsUATibjES2A==",
+	"image": "vivawallet.png",
+	"file":[
+        {
+            "action": "copy",
+            "file": "filesupdate/front_main.txt",
+            "to": "protected/config/front_main.php"
+        }
+    ]
+}
