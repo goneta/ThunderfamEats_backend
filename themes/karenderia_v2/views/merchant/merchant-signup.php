@@ -1,4 +1,15 @@
 
+<!-- ThunderfamEats redesign: mark page for scoped theming -->
+<script>document.documentElement.classList.add('tf-merchant');</script>
+
+<!-- ThunderfamEats redesign: merchant hero -->
+<div class="tf-merchant-hero">
+  <div class="tf-merchant-hero-inner">
+    <h1><?php echo t("Grow your business with")?> <?php echo isset(Yii::app()->params['settings']['website_title']) ? CHtml::encode(Yii::app()->params['settings']['website_title']) : 'ThunderfamEats'?></h1>
+    <a href="#vue-merchant-signup" class="tf-btn tf-btn-green"><?php echo t("Register Now")?></a>
+  </div>
+</div>
+
 <!--register-section-->
 <div class="register-section container-fluid mt-3">
 
@@ -157,7 +168,31 @@
    </div>
 </div>
 
-<div class="grey-section m-0 partner-section">
+<!-- ThunderfamEats redesign: how it works -->
+<div class="tf-how">
+  <div class="tf-how-inner">
+    <h2><?php echo t("How it works")?></h2>
+    <div class="tf-steps">
+      <div class="tf-step">
+        <div class="tf-step-icon"><i class="zmdi zmdi-account-add" aria-hidden="true"></i></div>
+        <h5><?php echo t("Sign up")?></h5>
+        <p><?php echo t("Quick and easy registration process")?></p>
+      </div>
+      <div class="tf-step">
+        <div class="tf-step-icon"><i class="zmdi zmdi-store" aria-hidden="true"></i></div>
+        <h5><?php echo t("Set up your shop")?></h5>
+        <p><?php echo t("Add your products and services")?></p>
+      </div>
+      <div class="tf-step">
+        <div class="tf-step-icon"><i class="zmdi zmdi-trending-up" aria-hidden="true"></i></div>
+        <h5><?php echo t("Start earning")?></h5>
+        <p><?php echo t("Receive orders and grow revenue")?></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="grey-section m-0 partner-section tf-why">
 <div class="container w-75">
    <h4 class="text-center mb-3 mb-lg-5 mt-2 mt-lg-3"><?php echo t("Why partner with Us?")?></h4>
    

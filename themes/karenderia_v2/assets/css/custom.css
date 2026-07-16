@@ -1,0 +1,487 @@
+/* =============================================================================
+   ThunderfamEats — Redesign layer (custom.css)
+   Loaded LAST in the front-css bundle (see AssetsFrontBundle::registerBundle),
+   so rules here override style.css / responsive.css without editing them.
+
+   Scope:
+   - Global design tokens + light/dark theming (nav + footer are themed site-wide).
+   - Home page (.tf-home) : hero, "exclusive advantages", promo cards, join banner,
+     app section.
+   - Merchant signup (.tf-merchant) : hero, form card, "how it works", why-partner.
+
+   Page scoping is done with the `.tf-home` / `.tf-merchant` classes that the two
+   views add to <html> via a small inline script, plus page-unique selectors that
+   only exist on those pages. No functional markup (Vue bindings, form field ids,
+   route URLs) is styled by identity — only presentation.
+   ============================================================================= */
+
+/* ----------------------------------------------------------------------------
+   1. Design tokens
+   ---------------------------------------------------------------------------- */
+:root {
+  --tf-green: #32b268;
+  --tf-green-hover: #2a9c58;
+  --tf-green-soft: rgba(50, 178, 104, .12);
+
+  /* Light theme (default) */
+  --tf-bg: #ffffff;
+  --tf-bg-subtle: #f4f6f8;
+  --tf-bg-hero: #eef1f4;
+  --tf-card: #ffffff;
+  --tf-card-border: #e6e8ec;
+  --tf-text: #15171a;
+  --tf-text-muted: #5b6169;
+  --tf-nav-bg: #ffffff;
+  --tf-nav-border: #eceef1;
+  --tf-footer-bg: #0d1a2b;
+  --tf-footer-text: #c9ced6;
+  --tf-shadow: 0 10px 30px rgba(18, 22, 30, .08);
+  --tf-shadow-sm: 0 4px 14px rgba(18, 22, 30, .06);
+  --tf-radius: 14px;
+  --tf-radius-sm: 10px;
+
+  /* Accent borders for the three advantage cards (both themes) */
+  --tf-accent-1: #c05a54;
+  --tf-accent-2: #c9a13c;
+  --tf-accent-3: #4f74b3;
+}
+
+/* Dark theme — explicit toggle wins; falls back to OS preference below. */
+:root[data-theme="dark"] {
+  --tf-bg: #0e0f11;
+  --tf-bg-subtle: #151619;
+  --tf-bg-hero: #0e0f11;
+  --tf-card: #1a1c1f;
+  --tf-card-border: #2b2e33;
+  --tf-text: #f4f5f6;
+  --tf-text-muted: #9aa0a6;
+  --tf-nav-bg: #0a0b0d;
+  --tf-nav-border: #1c1e22;
+  --tf-footer-bg: #0a0b0d;
+  --tf-footer-text: #9aa0a6;
+  --tf-shadow: 0 10px 30px rgba(0, 0, 0, .45);
+  --tf-shadow-sm: 0 4px 14px rgba(0, 0, 0, .4);
+}
+
+/* If the user never toggled, honour the OS setting. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --tf-bg: #0e0f11;
+    --tf-bg-subtle: #151619;
+    --tf-bg-hero: #0e0f11;
+    --tf-card: #1a1c1f;
+    --tf-card-border: #2b2e33;
+    --tf-text: #f4f5f6;
+    --tf-text-muted: #9aa0a6;
+    --tf-nav-bg: #0a0b0d;
+    --tf-nav-border: #1c1e22;
+    --tf-footer-bg: #0a0b0d;
+    --tf-footer-text: #9aa0a6;
+    --tf-shadow: 0 10px 30px rgba(0, 0, 0, .45);
+    --tf-shadow-sm: 0 4px 14px rgba(0, 0, 0, .4);
+  }
+}
+
+/* ----------------------------------------------------------------------------
+   2. Page background theming (scoped to the two redesigned pages)
+   ---------------------------------------------------------------------------- */
+html.tf-home body,
+html.tf-merchant body {
+  background-color: var(--tf-bg);
+  color: var(--tf-text);
+}
+html.tf-home .page-content,
+html.tf-merchant .page-content {
+  background-color: var(--tf-bg);
+}
+
+/* ----------------------------------------------------------------------------
+   3. Buttons
+   ---------------------------------------------------------------------------- */
+.btn-green,
+.btn-green:focus,
+.btn-green:hover {
+  background-color: var(--tf-green) !important;
+  border-color: var(--tf-green) !important;
+  color: #fff !important;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: background-color .2s ease, transform .15s ease, box-shadow .2s ease;
+}
+.btn-green:hover {
+  background-color: var(--tf-green-hover) !important;
+  border-color: var(--tf-green-hover) !important;
+  box-shadow: 0 6px 18px var(--tf-green-soft);
+}
+
+.tf-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  padding: .7rem 1.5rem;
+  border-radius: 9px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background-color .2s ease, transform .15s ease, box-shadow .2s ease;
+}
+.tf-btn-green { background: var(--tf-green); color: #fff; }
+.tf-btn-green:hover { background: var(--tf-green-hover); color: #fff; transform: translateY(-1px); box-shadow: 0 8px 22px var(--tf-green-soft); }
+.tf-btn-light { background: #fff; color: #15171a; }
+.tf-btn-light:hover { background: #f0f2f4; color: #15171a; transform: translateY(-1px); }
+
+/* ----------------------------------------------------------------------------
+   4. Top navigation (global)
+   ---------------------------------------------------------------------------- */
+#top-navigation {
+  background: var(--tf-nav-bg);
+  border-bottom: 1px solid var(--tf-nav-border);
+  min-height: 62px;
+  padding: 6px 10px;
+  align-items: center;
+}
+html.tf-home #top-navigation,
+html.tf-merchant #top-navigation { color: var(--tf-text); }
+html.tf-home #top-navigation a,
+html.tf-merchant #top-navigation a { color: var(--tf-text); }
+
+/* Theme toggle button */
+.tf-theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 1px solid var(--tf-nav-border);
+  background: transparent;
+  color: var(--tf-text);
+  cursor: pointer;
+  margin-right: 10px;
+  font-size: 18px;
+  line-height: 1;
+  transition: background-color .2s ease, border-color .2s ease;
+}
+.tf-theme-toggle:hover { background: var(--tf-green-soft); border-color: var(--tf-green); }
+.tf-theme-toggle .tf-icon-sun { display: none; }
+.tf-theme-toggle .tf-icon-moon { display: inline; }
+:root[data-theme="dark"] .tf-theme-toggle .tf-icon-sun { display: inline; }
+:root[data-theme="dark"] .tf-theme-toggle .tf-icon-moon { display: none; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .tf-theme-toggle .tf-icon-sun { display: inline; }
+  :root:not([data-theme="light"]) .tf-theme-toggle .tf-icon-moon { display: none; }
+}
+
+/* ----------------------------------------------------------------------------
+   5. Home hero
+   ---------------------------------------------------------------------------- */
+html.tf-home #main-search-banner {
+  height: auto;
+  min-height: 440px;
+  background: var(--tf-bg-hero);
+  border-bottom: 1px solid var(--tf-card-border);
+  padding: 0;
+  display: block;
+}
+.tf-hero {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 56px 24px;
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+.tf-hero-text { flex: 1 1 46%; min-width: 0; }
+.tf-hero-art  { flex: 1 1 54%; min-width: 0; text-align: right; }
+.tf-hero-art img { max-width: 100%; height: auto; }
+.tf-hero-title {
+  font-size: clamp(2.1rem, 4.2vw, 3.2rem);
+  font-weight: 800;
+  line-height: 1.08;
+  letter-spacing: -.02em;
+  color: var(--tf-text);
+  margin: 0 0 16px;
+}
+.tf-hero-sub {
+  font-size: 1.06rem;
+  color: var(--tf-text-muted);
+  max-width: 440px;
+  margin: 0 0 26px;
+  line-height: 1.55;
+}
+/* The "Locate Your Location" search component styled as the hero CTA. */
+html.tf-home .tf-hero .home-search-wrap {
+  width: 100%;
+  max-width: 340px;
+  margin: 0;
+}
+
+/* ----------------------------------------------------------------------------
+   6. Section titles
+   ---------------------------------------------------------------------------- */
+.tf-section-title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--tf-text);
+  margin: 6px 0 22px;
+}
+
+/* ----------------------------------------------------------------------------
+   7. Home — "Nos avantages exclusifs" (advantage cards)
+   Rewritten markup in store/index.php: .tf-advantages > .tf-adv-card
+   ---------------------------------------------------------------------------- */
+.tf-advantages {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 22px;
+  margin: 0 0 10px;
+}
+.tf-adv-card {
+  background: var(--tf-card);
+  border: 1px solid var(--tf-card-border);
+  border-radius: var(--tf-radius);
+  overflow: hidden;
+  box-shadow: var(--tf-shadow-sm);
+  transition: transform .18s ease, box-shadow .2s ease;
+}
+.tf-adv-card:hover { transform: translateY(-4px); box-shadow: var(--tf-shadow); }
+.tf-adv-card.tf-adv-1 { border-top: 3px solid var(--tf-accent-1); }
+.tf-adv-card.tf-adv-2 { border-top: 3px solid var(--tf-accent-2); }
+.tf-adv-card.tf-adv-3 { border-top: 3px solid var(--tf-accent-3); }
+.tf-adv-img {
+  height: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--tf-bg-subtle);
+  padding: 14px;
+}
+.tf-adv-img img { max-height: 100%; max-width: 100%; object-fit: contain; }
+.tf-adv-body { padding: 20px 22px 24px; text-align: center; }
+.tf-adv-body h5 { font-size: 1.12rem; font-weight: 700; color: var(--tf-text); margin: 0 0 8px; }
+.tf-adv-body p  { font-size: .9rem; color: var(--tf-text-muted); margin: 0; line-height: 1.5; }
+
+/* ----------------------------------------------------------------------------
+   8. Home — promo cards (.section-benefits)
+   Restyled over existing markup; illustrations set as card backgrounds.
+   ---------------------------------------------------------------------------- */
+html.tf-home .section-benefits { margin-top: 22px; }
+html.tf-home .section-benefits .benefits {
+  position: relative;
+  height: 210px;
+  border-radius: var(--tf-radius);
+  overflow: hidden;
+  background-size: cover !important;
+  background-position: center top !important;
+  box-shadow: var(--tf-shadow-sm);
+  transition: transform .18s ease, box-shadow .2s ease;
+}
+html.tf-home .section-benefits .benefits:hover { transform: translateY(-4px); box-shadow: var(--tf-shadow); }
+html.tf-home .section-benefits .benefits-1 { background: url("../images/benefits-1.png") no-repeat; }
+html.tf-home .section-benefits .benefits-2 { background: url("../images/benefits-2.png") no-repeat; }
+html.tf-home .section-benefits .benefits-3 { background: url("../images/benefits-3.png") no-repeat; }
+html.tf-home .section-benefits .benefits-4 { background: url("../images/benefits-4.png") no-repeat; }
+html.tf-home .section-benefits .benefits .inner {
+  position: absolute;
+  inset: 0;
+  padding: 16px 18px;
+  background: linear-gradient(180deg, rgba(0,0,0,.55) 0%, rgba(0,0,0,.05) 42%, rgba(0,0,0,0) 100%);
+}
+html.tf-home .section-benefits .benefits h4 {
+  color: #fff;
+  font-size: 1.05rem;
+  font-weight: 700;
+  line-height: 1.25;
+  max-width: 80%;
+  text-shadow: 0 1px 6px rgba(0,0,0,.5);
+}
+
+/* ----------------------------------------------------------------------------
+   9. Home — join-us banner (.section-join-us)
+   ---------------------------------------------------------------------------- */
+html.tf-home .section-join-us,
+html.tf-merchant .section-join-us {
+  border-radius: var(--tf-radius);
+  overflow: hidden;
+  position: relative;
+}
+html.tf-home .section-join-us .btn-white-parent .btn-link,
+html.tf-merchant .section-join-us .btn-white-parent .btn-link {
+  background: #fff;
+  color: #15171a;
+  border-radius: 8px;
+  font-weight: 600;
+  padding: .55rem 1.6rem;
+}
+html.tf-home .section-join-us .btn-white-parent .btn-link:hover,
+html.tf-merchant .section-join-us .btn-white-parent .btn-link:hover {
+  background: #f0f2f4;
+}
+
+/* ----------------------------------------------------------------------------
+   10. Home — app section (.section-mobileapp)
+   ---------------------------------------------------------------------------- */
+html.tf-home .section-mobileapp {
+  background: var(--tf-bg-subtle);
+  border: none;
+}
+html.tf-home .section-mobileapp h3,
+html.tf-home .section-mobileapp h5,
+html.tf-home .section-mobileapp p { color: var(--tf-text); }
+html.tf-home .section-mobileapp h5 { color: var(--tf-text-muted); }
+
+/* ----------------------------------------------------------------------------
+   11. Footer + sub-footer (global, matches design)
+   ---------------------------------------------------------------------------- */
+.sub-footer,
+footer {
+  background: var(--tf-footer-bg);
+  color: var(--tf-footer-text);
+}
+.sub-footer { padding: 34px 0 22px; }
+.sub-footer a, footer a { color: var(--tf-footer-text); }
+.sub-footer a:hover, footer a:hover { color: #fff; }
+footer { padding: 18px 0; border-top: 1px solid rgba(255,255,255,.06); }
+footer p { color: var(--tf-footer-text); }
+.sub-footer .footer-menu a,
+.sub-footer .widget-footer-menu a { color: var(--tf-footer-text); }
+.sub-footer .esubscription .el-button { border-radius: 8px; }
+
+/* ----------------------------------------------------------------------------
+   12. Merchant signup
+   ---------------------------------------------------------------------------- */
+/* Hero */
+.tf-merchant-hero {
+  position: relative;
+  min-height: 360px;
+  background:
+    linear-gradient(90deg, rgba(8,10,14,.72) 0%, rgba(8,10,14,.35) 55%, rgba(8,10,14,.15) 100%),
+    url("../images/register.png") right center no-repeat;
+  background-size: cover;
+  display: flex;
+  align-items: center;
+}
+.tf-merchant-hero .tf-merchant-hero-inner {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 48px 24px;
+  width: 100%;
+}
+.tf-merchant-hero h1 {
+  color: #fff;
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 800;
+  line-height: 1.1;
+  max-width: 620px;
+  margin: 0 0 24px;
+}
+
+/* Form card */
+html.tf-merchant .register-section {
+  background: var(--tf-bg);
+  padding-top: 0;
+}
+html.tf-merchant #vue-merchant-signup {
+  background: var(--tf-card);
+  border: 1px solid var(--tf-card-border);
+  border-radius: var(--tf-radius);
+  box-shadow: var(--tf-shadow);
+  padding: 30px 30px 34px;
+  max-width: 620px;
+  margin: -70px auto 40px;
+  position: relative;
+  z-index: 5;
+}
+html.tf-merchant #vue-merchant-signup h3 { color: var(--tf-text); font-weight: 700; }
+html.tf-merchant #vue-merchant-signup .text-grey { color: var(--tf-text-muted) !important; }
+html.tf-merchant #vue-merchant-signup .form-control,
+html.tf-merchant #vue-merchant-signup .custom-select {
+  background: var(--tf-bg);
+  border: 1px solid var(--tf-card-border);
+  color: var(--tf-text);
+  border-radius: 8px;
+}
+html.tf-merchant #vue-merchant-signup .form-control:focus {
+  border-color: var(--tf-green);
+  box-shadow: 0 0 0 3px var(--tf-green-soft);
+}
+html.tf-merchant #vue-merchant-signup label,
+html.tf-merchant #vue-merchant-signup p,
+html.tf-merchant #vue-merchant-signup h6 { color: var(--tf-text); }
+html.tf-merchant #vue-merchant-signup .register-bg { display: none; } /* remove side image; hero carries it */
+html.tf-merchant .register-section .row { display: block; }
+html.tf-merchant .register-section .col { max-width: 100%; flex: 0 0 100%; }
+
+/* How it works (new presentational section) */
+.tf-how {
+  background: var(--tf-bg);
+  padding: 56px 24px;
+}
+.tf-how-inner, .tf-why-inner { max-width: 1050px; margin: 0 auto; }
+.tf-how h2, .tf-why h2 {
+  text-align: center;
+  font-size: 1.7rem;
+  font-weight: 700;
+  color: var(--tf-text);
+  margin: 0 0 40px;
+}
+.tf-steps, .tf-why-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+}
+.tf-step, .tf-why-card { text-align: center; padding: 0 10px; }
+.tf-step-icon {
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 16px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 30px;
+  color: var(--tf-green);
+  background: var(--tf-green-soft);
+}
+.tf-step h5, .tf-why-card h5 { font-weight: 700; color: var(--tf-text); margin: 0 0 6px; font-size: 1.1rem; }
+.tf-step p, .tf-why-card p { color: var(--tf-text-muted); margin: 0; font-size: .93rem; }
+
+/* Why partner (restyle existing .partner-section) */
+html.tf-merchant .grey-section.partner-section { background: var(--tf-bg-subtle); }
+html.tf-merchant .partner-section .section {
+  background: var(--tf-card);
+  border: 1px solid var(--tf-card-border);
+  border-radius: var(--tf-radius);
+  box-shadow: var(--tf-shadow-sm);
+  padding: 26px 22px;
+  height: 100%;
+  text-align: center;
+}
+html.tf-merchant .partner-section .col { height: auto; }
+html.tf-merchant .partner-section .section h5 { color: var(--tf-text); font-weight: 700; }
+html.tf-merchant .partner-section .section p { color: var(--tf-text-muted); }
+
+/* ----------------------------------------------------------------------------
+   13. Responsive
+   ---------------------------------------------------------------------------- */
+@media (max-width: 991px) {
+  .tf-hero { flex-direction: column; text-align: center; padding: 40px 20px; }
+  .tf-hero-text { order: 2; }
+  .tf-hero-art  { order: 1; text-align: center; }
+  .tf-hero-sub { margin-left: auto; margin-right: auto; }
+  html.tf-home .tf-hero .home-search-wrap { margin: 0 auto; }
+  .tf-advantages { grid-template-columns: 1fr; }
+  .tf-steps, .tf-why-grid { grid-template-columns: 1fr; gap: 26px; }
+  html.tf-merchant #vue-merchant-signup { margin-top: 24px; }
+  .tf-merchant-hero { min-height: 300px; }
+}
+@media (min-width: 768px) and (max-width: 991px) {
+  .tf-advantages { grid-template-columns: repeat(3, 1fr); }
+  .tf-steps, .tf-why-grid { grid-template-columns: repeat(3, 1fr); }
+}
+@media (max-width: 575px) {
+  .tf-hero-title { font-size: 2rem; }
+  .tf-section-title { font-size: 1.35rem; }
+  html.tf-home .section-benefits .benefits { height: 175px; }
+}

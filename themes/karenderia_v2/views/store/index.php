@@ -1,14 +1,19 @@
 
+<!-- ThunderfamEats redesign: mark page for scoped theming -->
+<script>document.documentElement.classList.add('tf-home');</script>
+
 <div id="vm_home_search">
 
   <div class="d-block d-lg-none">
     <div class="mobile-home-banner"></div>
   </div>
 <!-- KEN MODIFICATIONS  -->
-  <div class="container-fluid d-flex justify-content-center" id="main-search-banner">
-      <div class="banner-center align-self-center">
-         <h2 class="text-center mb-3"><?php echo t("")?></h2> <!-- Let's find best food for you  -->
-          <div class="home-search-wrap" >     
+  <div class="container-fluid" id="main-search-banner">
+    <div class="tf-hero">
+      <div class="tf-hero-text">
+         <h1 class="tf-hero-title"><?php echo t("Your local multi-service partner")?></h1>
+         <p class="tf-hero-sub"><?php echo t("Order, track and quickly receive all your essential products and services.")?></p>
+          <div class="home-search-wrap" >
             
            <component-auto-complete
             ref="auto_complete"
@@ -26,7 +31,12 @@
           </div>
           <!-- home-search-wrap -->
       </div>
-      <!-- banner-center -->
+      <!-- tf-hero-text -->
+      <div class="tf-hero-art">
+        <img src="<?php echo Yii::app()->theme->baseUrl?>/assets/images/full-header@2x.png" alt="<?php echo CHtml::encode(t("ThunderfamEats services"))?>">
+      </div>
+    </div>
+    <!-- tf-hero -->
   </div>
   <!-- main-search-banner -->
 
@@ -152,41 +162,33 @@
   <!-- order 3 steps -->
   <?php if(isset(Yii::app()->params['settings']['enabled_home_steps'])):?>
   <?php if(Yii::app()->params['settings']['enabled_home_steps']==1):?>
-  <div class="order-three-steps d-none d-lg-block">  
-  <div class="section-addons row mt-4 mb-0">      
-      <div class="col-lg-4 col-md-4 mb-4 mb-lg-3">
-        <div class="addons addons-1">
-	        <div class="inner">
-	        <!-- <h1>01</h1> -->
-          <br> <br>
-	        <h5 style="text-align:right; color: white; font-size: 20px;"><?php echo t("No Minimum Order")?></h5>  <!--No Minimum Order-->
-	        <p style="text-align:right; color: white; font-size: 180px;"><?php echo t("Order in for yourself or for the group, with no restrictions on order value")?></p> <!--Order in for yourself or for the group, with no restrictions on order value -->
-	        </div>
+  <div class="order-three-steps d-none d-lg-block">
+  <h2 class="tf-section-title"><?php echo t("Our exclusive advantages")?></h2>
+  <div class="tf-advantages">
+      <div class="tf-adv-card tf-adv-1">
+        <div class="tf-adv-img"><img src="<?php echo Yii::app()->theme->baseUrl?>/assets/images/addons-1_new.png" alt=""></div>
+        <div class="tf-adv-body">
+          <h5><?php echo t("No Minimum Order")?></h5>
+          <p><?php echo t("Order in for yourself or for the group, with no restrictions on order value")?></p>
         </div>
       </div>
-      
-       <div class="col-lg-4 col-md-4 mb-4 mb-lg-3">
-        <div class="addons addons-2">
-	        <div class="inner">
-	        <!-- <h1>02</h1> -->
-          <br> <br>
-          <h5 style="text-align:right; color: white; font-size: 20px;"><?php echo t("Live Order Tracking")?></h5><!-- Live Order Tracking -->
-	        <p style="text-align:right; color: white; font-size: 180px;"><?php echo t("Know where your order is at all times, from the restaurant to your doorstep")?></p><!-- Know where your order is at all times, from the restaurant to your doorstep -->
-	        </div>
+
+      <div class="tf-adv-card tf-adv-2">
+        <div class="tf-adv-img"><img src="<?php echo Yii::app()->theme->baseUrl?>/assets/images/addons-2_new.png" alt=""></div>
+        <div class="tf-adv-body">
+          <h5><?php echo t("Live Order Tracking")?></h5>
+          <p><?php echo t("Know where your order is at all times, from the restaurant to your doorstep")?></p>
         </div>
       </div>
-      
-       <div class="col-lg-4 col-md-4 mb-4 mb-lg-3">
-        <div class="addons addons-3">
-	        <div class="inner">
-	        <!-- <h1>03</h1> -->
-           <br> <br>
-          <h5 style="text-align:right; color: white; font-size: 20px;"><?php echo t("Lightning-Fast Deliver")?></h5>
-	        <p style="text-align:right; color: white; font-size: 180px;"><?php echo t("Experience karenderia superfast delivery for food delivered fresh & on time")?></p> <!-- Experience karenderia superfast delivery for food delivered fresh & on time -->
-	        </div>
+
+      <div class="tf-adv-card tf-adv-3">
+        <div class="tf-adv-img"><img src="<?php echo Yii::app()->theme->baseUrl?>/assets/images/addons-3_new.png" alt=""></div>
+        <div class="tf-adv-body">
+          <h5><?php echo t("Lightning-Fast Deliver")?></h5>
+          <p><?php echo t("Experience karenderia superfast delivery for food delivered fresh & on time")?></p>
         </div>
-      </div>            
-   </div> <!--ordering-steps-->
+      </div>
+   </div> <!--tf-advantages-->
    </div> <!-- order 3 steps -->      
 
     <!-- order 3 steps mobile -->

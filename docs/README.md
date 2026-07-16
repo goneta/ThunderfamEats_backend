@@ -35,6 +35,7 @@ HTTP ─▶ index.php ─▶ front_main.php ─▶ Controller ─▶ Component (
 | Commands | [`protected/commands/AGENTS.md`](../protected/commands/AGENTS.md) | Queue worker + cron |
 | Modules | [`protected/modules/AGENTS.md`](../protected/modules/AGENTS.md) | Payment gateways + feature add-ons |
 | Back office | [`backoffice/AGENTS.md`](../backoffice/AGENTS.md) | Admin application |
+| Front-end theme | [`themes/karenderia_v2/AGENTS.md`](../themes/karenderia_v2/AGENTS.md) | Storefront/customer views, CSS, redesign layer |
 
 ## Per-file reference docs
 
@@ -44,6 +45,7 @@ HTTP ─▶ index.php ─▶ front_main.php ─▶ Controller ─▶ Component (
 - [`console.php.md`](console.php.md) — console (CLI) app configuration
 - [`params.php.md`](params.php.md) — app constants + global helper functions
 - [`InterfaceController.php.md`](InterfaceController.php.md) — primary customer/mobile JSON API
+- [`custom.css.md`](custom.css.md) — front-end UI redesign layer (light/dark theming)
 
 New per-file docs should follow the same template (purpose, responsibilities, entry points,
 public API, dependencies, DB interactions, endpoints, inputs/outputs, side effects, security,

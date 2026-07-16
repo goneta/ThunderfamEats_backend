@@ -35,13 +35,18 @@
       <?php endif;?>             
     <?php endif;?>
 
-    <div class=" col-lg-auto col-md-6 col d-flex justify-content-end align-items-center">          
-     <?php           
-     if(!empty($widget_col2)){        
+    <div class=" col-lg-auto col-md-6 col d-flex justify-content-end align-items-center">
+     <!-- ThunderfamEats redesign: light/dark theme toggle -->
+     <button type="button" id="tf-theme-toggle" class="tf-theme-toggle" aria-label="<?php echo t("Toggle dark mode")?>" title="<?php echo t("Toggle dark mode")?>">
+       <i class="zmdi zmdi-brightness-3 tf-icon-moon" aria-hidden="true"></i>
+       <i class="zmdi zmdi-brightness-5 tf-icon-sun" aria-hidden="true"></i>
+     </button>
+     <?php
+     if(!empty($widget_col2)){
     	 $this->renderPartial("//components/$widget_col2");
      }
      ?>
-     <?php $this->widget('application.components.WidgetUserNav');?>    
+     <?php $this->widget('application.components.WidgetUserNav');?>
     </div> <!--col-->
 
  </div><!-- row-->

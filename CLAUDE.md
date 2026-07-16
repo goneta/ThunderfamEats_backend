@@ -186,3 +186,62 @@ each area. Per-file docs: [`docs/README.md`](docs/README.md).
 - Set `YII_DEBUG = false` and remove `phpinfo.php` from the server.
 - Continue expanding `docs/*.md` for remaining key controllers/components and back-office.
 - Add automated tests; evaluate migrating dependencies to Composer.
+
+### 2026-07-16 — Front-end UI redesign (home + merchant signup, light/dark)
+
+**Objectives**
+- Redesign the public storefront **home page** and the **merchant signup page** to match the
+  provided mockups (dark + light mode), purely presentationally — no change to routes, APIs,
+  controllers, models, business logic, auth, payments, validations or the registration flow.
+
+**What was changed**
+- Added a redesign stylesheet, `themes/karenderia_v2/assets/css/custom.css` (previously empty,
+  already enqueued **last** in the `front-css` bundle so it overrides `style.css` without
+  editing it). It defines `--tf-*` design tokens, light/dark theming, and restyles nav, hero,
+  advantage cards, promo cards, join banner, app section, footer and the merchant form/hero.
+- Light/dark theming via `data-theme` on `<html>`: a no-FOUC init script + a toggle handler in
+  `views/layouts/main-layout.php`, a toggle button (`#tf-theme-toggle`) in
+  `views/layouts/top-nav.php`, persisted to `localStorage` (`tf-theme`), defaulting to
+  `prefers-color-scheme`.
+- `views/store/index.php`: restructured the hero into a two-column layout (heading + subtitle +
+  existing "Locate Your Location" search component + `full-header@2x.png` illustration); added a
+  "Nos avantages exclusifs" section title; rebuilt the three advantage cards
+  (`.tf-advantages`) using `addons-*_new.png`, removing broken inline styles. Added a `tf-home`
+  page-scope marker.
+- `views/merchant/merchant-signup.php`: added a hero banner ("Grow your business…" + Register
+  Now), wrapped the existing Vue form as a floating card, and added a new "How it works"
+  3-step section. Added a `tf-merchant` page-scope marker. All real form fields (store name,
+  address autocomplete, membership, services, recaptcha, submit) were preserved unchanged.
+
+**UI / architectural decisions**
+- CSS-override layer (`custom.css`) instead of touching `style.css` → additive, low-risk,
+  trivially revertible.
+- Page-scope classes (`tf-home` / `tf-merchant`) added to `<html>` so deep restyles don't leak
+  to other pages; nav/footer theming kept global for consistency.
+- Reused existing theme illustrations (`full-header`, `addons-*_new`, `benefits-*`, `register`)
+  and the already-bundled `zmdi` icon font — no new assets committed.
+- Kept the merchant form's real functional fields rather than the mockup's simplified fields,
+  to preserve the registration flow.
+
+**Verification**
+- No PHP runtime available locally; validated via a throwaway static preview served over
+  `python -m http.server` and inspected in-browser: confirmed correct DOM/section order and
+  that `custom.css` computes correctly in **both** light and dark (tokens flip, green accent
+  `#32b268`, 3-col advantage/steps grids, themed nav/footer/form card). Preview file removed
+  before commit. Functional markup (Vue directives, form ids, `t()` strings, route URLs) left
+  byte-identical.
+
+**Files modified / added**
+- Added: `themes/karenderia_v2/assets/css/custom.css`, `themes/karenderia_v2/AGENTS.md`,
+  `docs/custom.css.md`.
+- Modified: `themes/karenderia_v2/views/layouts/main-layout.php`,
+  `themes/karenderia_v2/views/layouts/top-nav.php`,
+  `themes/karenderia_v2/views/store/index.php`,
+  `themes/karenderia_v2/views/merchant/merchant-signup.php`,
+  `AGENTS.md` (child index), `docs/README.md` (index).
+
+**Known limitations / future improvements**
+- Deep page theming is scoped to home + signup; inner pages keep the legacy look but inherit
+  the themed nav/footer. Extend token theming to restaurants/menu/checkout next.
+- New display strings (hero copy, "How it works") use `t()` source strings; add translation-DB
+  entries for full non-English rendering.

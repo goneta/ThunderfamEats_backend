@@ -4,6 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<!-- ThunderfamEats redesign: apply saved light/dark theme before first paint (no FOUC) -->
+<script>(function(){try{var t=localStorage.getItem('tf-theme');if(t){document.documentElement.setAttribute('data-theme',t);}}catch(e){}})();</script>
 <meta name="robots" content="index, follow" />
 <meta name="<?php echo Yii::app()->request->csrfTokenName?>" content="<?php echo Yii::app()->request->csrfToken?>" />    
 <link rel="apple-touch-icon" sizes="76x76" href="<?php echo Yii::app()->theme->baseUrl?>/assets/icons/apple-touch-icon.png">
@@ -21,6 +23,21 @@
 <body class="position-relative <?php echo $this->getBodyClasses(); ?>" data-spy="scroll" data-target="#menu-category" data-offset="75" >
 
 <?php echo $content; ?>
+
+<!-- ThunderfamEats redesign: light/dark theme toggle handler -->
+<script>
+document.addEventListener('click', function (e) {
+  var btn = e.target.closest ? e.target.closest('#tf-theme-toggle') : null;
+  if (!btn) return;
+  var cur = document.documentElement.getAttribute('data-theme');
+  var next;
+  if (cur === 'dark') { next = 'light'; }
+  else if (cur === 'light') { next = 'dark'; }
+  else { next = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'light' : 'dark'; }
+  document.documentElement.setAttribute('data-theme', next);
+  try { localStorage.setItem('tf-theme', next); } catch (err) {}
+});
+</script>
 
 </body>
 </html>

@@ -155,6 +155,7 @@ and change log is [`CLAUDE.md`](CLAUDE.md) — append a dated entry there on eve
 - `protected/AGENTS.md` — front/API application: controllers, models, components, jobs,
   commands, modules, config. Owns the bulk of business logic.
 - `backoffice/AGENTS.md` — admin / back-office application.
+- `themes/karenderia_v2/AGENTS.md` — front-end theme: storefront/customer views, CSS assets,
+  and the `custom.css` redesign layer (light/dark theming).
 
-`framework/` (vendored Yii) and `themes/` (view layer) are owned by this root doc until
-they grow their own durable contracts.
+`framework/` (vendored Yii) is owned by this root doc until it grows its own durable contract.
