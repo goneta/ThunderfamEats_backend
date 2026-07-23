@@ -32,8 +32,12 @@ makes the redesign additive and easy to revert (empty the file).
 5. **Merchant (`html.tf-merchant`)** — hero (`.tf-merchant-hero`), the signup form card
    (`#vue-merchant-signup`), a new "How it works" section (`.tf-how`/`.tf-steps`), and the
    restyled "Why partner" grid (`.partner-section`).
-6. **Footer** — global `.sub-footer` / `footer` theming.
-7. **Responsive** — breakpoints at 991px / 767px / 575px collapse grids and stack the hero.
+6. **Restaurants / feed (`html.tf-feed`, `/store/restaurants` → `feed.php`)** — page
+   background, the filter sidebar as a card (`.section-filter`), restaurant result cards
+   (a `.tf-store-card` wrapper added inside each `.list-items` column), the "Show more"
+   button, and the fast-delivery banner.
+7. **Footer** — global `.sub-footer` / `footer` theming.
+8. **Responsive** — breakpoints at 991px / 767px / 575px collapse grids and stack the hero.
 
 ## Inputs / Outputs
 
@@ -66,9 +70,11 @@ variables and transforms; no runtime cost of note.
 
 ## Known limitations
 
-- Deep theming (page background/cards) is scoped to the two redesigned pages; other inner
-  pages keep the legacy look but inherit the themed nav/footer, so a toggled dark mode is only
-  fully realized on home + signup.
+- Deep theming (page background/cards) is scoped to the redesigned pages (home, merchant
+  signup, restaurants/feed); other inner pages (menu, cart, checkout) keep the legacy look but
+  inherit the themed nav/footer, so a toggled dark mode is only fully realized on those pages.
+- The location-mode restaurants view (`feed-locations.php`, used only when
+  `home_search_mode = "location"`) is not yet covered; this site runs in address mode.
 - The merchant form keeps its real functional fields (store name, address autocomplete,
   membership, services, recaptcha); it is not reduced to the simplified fields shown in the
   mockup, to preserve the registration flow.

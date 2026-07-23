@@ -463,6 +463,88 @@ html.tf-merchant .partner-section .section h5 { color: var(--tf-text); font-weig
 html.tf-merchant .partner-section .section p { color: var(--tf-text-muted); }
 
 /* ----------------------------------------------------------------------------
+   12b. Restaurants / feed page (.tf-feed) — /store/restaurants
+   Restyled over the existing feed.php markup (filter sidebar + result cards +
+   fast-delivery banner). A `.tf-store-card` wrapper is added inside each result
+   column; everything else is theming only.
+   ---------------------------------------------------------------------------- */
+html.tf-feed body,
+html.tf-feed .page-content { background-color: var(--tf-bg); color: var(--tf-text); }
+
+/* Headings / text */
+html.tf-feed .column-1 h4,
+html.tf-feed .column-1 h5,
+html.tf-feed .column-2 h3,
+html.tf-feed .column-2 h4,
+html.tf-feed .column-2 h5,
+html.tf-feed #vue-feed h3,
+html.tf-feed #vue-feed h4 { color: var(--tf-text); }
+html.tf-feed .column-1 a,
+html.tf-feed .column-1 label,
+html.tf-feed .column-2 label { color: var(--tf-text); }
+html.tf-feed .text-muted { color: var(--tf-text-muted) !important; }
+
+/* Mobile search box */
+html.tf-feed .inputs-box-grey {
+  background: var(--tf-bg-subtle);
+  color: var(--tf-text);
+  border: 1px solid var(--tf-card-border);
+}
+
+/* Filter sidebar as a card */
+html.tf-feed .section-filter {
+  background: var(--tf-card);
+  border: 1px solid var(--tf-card-border);
+  border-radius: var(--tf-radius);
+  padding: 4px 16px;
+  box-shadow: var(--tf-shadow-sm);
+}
+html.tf-feed .section-filter .filter-row { border-color: var(--tf-card-border) !important; }
+html.tf-feed .section-filter .btn-group .btn { color: var(--tf-text); border-color: var(--tf-card-border); }
+html.tf-feed .section-filter .btn-group .btn.active { background: var(--tf-green); border-color: var(--tf-green); color: #fff; }
+
+/* Restaurant result cards */
+html.tf-feed .list-items .tf-store-card {
+  background: var(--tf-card);
+  border: 1px solid var(--tf-card-border);
+  border-radius: var(--tf-radius);
+  padding: 10px;
+  height: 100%;
+  box-shadow: var(--tf-shadow-sm);
+  transition: transform .18s ease, box-shadow .2s ease;
+}
+html.tf-feed .list-items .tf-store-card:hover { transform: translateY(-3px); box-shadow: var(--tf-shadow); }
+html.tf-feed .tf-store-card .el-image,
+html.tf-feed .tf-store-card .position-relative > a .el-image { border-radius: 10px; overflow: hidden; }
+html.tf-feed .tf-store-card h5,
+html.tf-feed .tf-store-card h6 { color: var(--tf-text); }
+html.tf-feed .tf-store-card p,
+html.tf-feed .tf-store-card .a-12,
+html.tf-feed .tf-store-card span:not(.el-tag) { color: var(--tf-text-muted); }
+
+/* "Show more" (btn-black) → theme-aware pill */
+html.tf-feed .btn-black {
+  background: var(--tf-text);
+  color: var(--tf-bg);
+  border-radius: 8px;
+  font-weight: 600;
+}
+html.tf-feed .btn-black:hover { opacity: .9; color: var(--tf-bg); }
+
+/* Fast-delivery banner */
+html.tf-feed .section-fast-delivery,
+html.tf-feed .section-fast-delivery-mobile {
+  background: var(--tf-bg-subtle);
+  border-radius: var(--tf-radius);
+}
+html.tf-feed .section-fast-delivery h1,
+html.tf-feed .section-fast-delivery h5,
+html.tf-feed .section-fast-delivery p,
+html.tf-feed .section-fast-delivery-mobile h1,
+html.tf-feed .section-fast-delivery-mobile h5,
+html.tf-feed .section-fast-delivery-mobile p { color: var(--tf-text); }
+
+/* ----------------------------------------------------------------------------
    13. Responsive
    ---------------------------------------------------------------------------- */
 @media (max-width: 991px) {

@@ -135,6 +135,21 @@ each area. Per-file docs: [`docs/README.md`](docs/README.md).
 
 ## Change Log
 
+### 2026-07-22 — Customer-app chat auth + AI assistant gateway (InterfaceController)
+
+**What was changed**
+- Added two customer-authenticated endpoints to `protected/controllers/InterfaceController.php`:
+  - `actionfirebaseCustomToken` (+ private `loadFirebaseServiceAccount`) — `POST /interface/firebaseCustomToken`. Mints a Firebase **custom token** (RS256 JWT via the already-vendored `Firebase\JWT\JWT`, signed with the service-account key) whose `uid` = the authenticated customer's `client_uuid`. Fulfils the app contract in `MobileVue/docs/backend/firebase-custom-token.md` and unblocks participant-only Firestore chat rules. Config: `FIREBASE_SA_JSON_PATH` in `k-config.php`.
+  - `actionaichat` (+ private `aiCall`) — `POST /interface/aichat`. Server-side, **read-only** AI assistant for the customer app. Builds a system prompt (app description + customer first name + locale + optional app-supplied read-only `context`), calls the configured LLM (Anthropic Messages API in v1) via cURL with a **server-side** key, returns `{ details:{ reply } }`. The prompt forbids write/order/payment claims; no DB writes. Config: `TFE_AI_PROVIDER` / `TFE_AI_MODEL` / `TFE_AI_API_KEY`.
+- Registered both actions under `verifyCustomer` in `protected/controllers/InterfaceCommon.php` `accessRules()`.
+- Documented the new `k-config.php` defines in `k-config.sample.php` (commented; secrets stay in the git-ignored `k-config.php` / service-account JSON).
+- New reference doc: `docs/ai-gateway-and-firebase-token.md` (setup, config, curl tests, security, owner verification checklist).
+
+**Notes / not done here**
+- No route/CSRF change: `interface/*` is already in `front_main.php` → `noCsrfValidationRoutes`.
+- Both endpoints are **disabled until configured** and fail closed (non-`1` code); the app degrades gracefully (deterministic read-only assistant; chat connect-error).
+- Authored without a local PHP CLI — `php -l` and a live curl test against a staging DB are on the owner's verification checklist (see the doc). Static brace/paren balance was checked. Not deployed.
+
 ### 2026-07-15 — Repository security hardening + DOX documentation initialization
 
 **What was changed**
@@ -245,3 +260,43 @@ each area. Per-file docs: [`docs/README.md`](docs/README.md).
   the themed nav/footer. Extend token theming to restaurants/menu/checkout next.
 - New display strings (hero copy, "How it works") use `t()` source strings; add translation-DB
   entries for full non-English rendering.
+
+### 2026-07-23 — Extend redesign to restaurants/feed page + fix upload/.htaccess (Apache 2.4)
+
+**Context**
+- After the home + merchant redesign, the running local site (`thunderfameats.local`, WAMP,
+  DocumentRoot = this repo) appeared "not redesigned." Diagnosis: the server *was* serving the
+  new design (verified `GET /` and `/merchant/signup` return 200 with the redesign markup and
+  `custom.css` loads as 200/text/css). The perceived issue was client-side: (1) browser cache,
+  and (2) `StoreController::actionIndex` redirects `/` → `/store/restaurants` once a
+  `kmrs_local_id` location cookie is set, and that results page had not been redesigned.
+
+**What was changed**
+- **Redesign extended to `/store/restaurants`** (`themes/karenderia_v2/views/store/feed.php`):
+  added a `tf-feed` page-scope marker and wrapped each result column's content in a
+  `.tf-store-card` div. Added a `12b. Restaurants / feed` section to `custom.css` theming the
+  filter sidebar (as a card), result cards, "Show more" button, fast-delivery banner and page
+  background — all via the existing `--tf-*` tokens, light/dark. No Vue directives, ids or
+  routes changed.
+- **Fixed `upload/.htaccess`** (git-ignored, server-local): replaced Apache 2.2 `deny from all`
+  (which Apache 2.4 rejects → HTTP 500 on every `/upload/*` request, breaking user-uploaded
+  images) with `Require all denied` wrapped in `mod_authz_core` / fallback blocks. Verified:
+  an uploaded image now returns 200 (was 500) and a `.php` in `upload/` returns 403 (blocked).
+
+**Verification**
+- `feed.php` parses cleanly (a `/store/feed` request executed to line 41 before a pre-existing
+  `Undefined variable $tabs_suggestion` runtime notice — that route, `actionFeed`, omits the
+  vars `actionRestaurants` passes; unrelated to this change). Div balance confirmed (1 wrapper
+  open/close). `custom.css` feed rules validated in a throwaway static preview: cards get
+  14px radius + border + shadow and the sidebar becomes a card in both light and dark
+  (tokens flip body `#fff`/`#0e0f11`, card `#fff`/`#1a1c1f`). Preview removed before commit.
+
+**Files modified / added**
+- Modified: `themes/karenderia_v2/views/store/feed.php`,
+  `themes/karenderia_v2/assets/css/custom.css`, `themes/karenderia_v2/AGENTS.md`,
+  `docs/custom.css.md`, `CLAUDE.md`.
+- Server-local (git-ignored, not committed): `upload/.htaccess`.
+
+**Known limitations / next steps**
+- The location-mode results view (`feed-locations.php`) is not themed (site runs address mode).
+- Menu / cart / checkout pages still use the legacy look; extend `--tf-*` theming there next.

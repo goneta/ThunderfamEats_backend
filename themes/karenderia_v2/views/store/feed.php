@@ -1,3 +1,6 @@
+<!-- ThunderfamEats redesign: mark page for scoped theming -->
+<script>document.documentElement.classList.add('tf-feed');</script>
+
 <div id="vue-feed" class="container-fluid"  >
 
 
@@ -298,8 +301,9 @@ ajax_url="<?php echo Yii::app()->createUrl("/api")?>"
 	     v-for="item in datas[0]"
 	     v-cloak
 	     v-if="item !== null && item !== undefined"
-	   :class="{ 'make-grey': item && (item.merchant_open_status=='0' || item.close_store=='1' || item.disabled_ordering=='1') }"  >  
-	   	   
+	   :class="{ 'make-grey': item && (item.merchant_open_status=='0' || item.close_store=='1' || item.disabled_ordering=='1') }"  >
+	     <div class="tf-store-card">
+
 	     <!--IMAGE-->
 	     <div class="position-relative"> 	  		   
 	       <a :href="item.merchant_url">			   
@@ -424,7 +428,8 @@ ajax_url="<?php echo Yii::app()->createUrl("/api")?>"
 			</p>
 	      </div>
 	    </div> <!--flex-->
-	   
+
+	     </div> <!--tf-store-card-->
 	   </div> <!--col-->
 	   </template>
 	</div> <!--row-->

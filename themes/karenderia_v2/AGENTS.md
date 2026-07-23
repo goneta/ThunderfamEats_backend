@@ -39,9 +39,14 @@ CSS/JS are enqueued by `protected/components/AssetsFrontBundle.php` (the `front-
   `views/layouts/top-nav.php` (`#tf-theme-toggle`) flips it and persists to `localStorage`
   (`tf-theme`); a click handler sits at the end of `main-layout.php`. Absent a saved choice,
   `prefers-color-scheme` decides.
-- **Page scoping:** `store/index.php` and `merchant/merchant-signup.php` add a `tf-home` /
-  `tf-merchant` class to `<html>` via a one-line inline script so page-specific restyles in
+- **Page scoping:** `store/index.php` (`tf-home`), `merchant/merchant-signup.php`
+  (`tf-merchant`) and `store/feed.php` (`tf-feed`, the `/store/restaurants` results page) each
+  add their class to `<html>` via a one-line inline script so page-specific restyles in
   `custom.css` don't leak to other pages. Nav/footer theming is intentionally global.
+- **feed.php note:** the real results route is `StoreController::actionRestaurants`, which
+  passes `tabs_suggestion` / `responsive` / `place_details`. The bare `actionFeed`
+  (`/store/feed`) renders the same view without those vars and 500s under `YII_DEBUG` — a
+  pre-existing quirk, not a redesign regression. Verify feed changes via `/store/restaurants`.
 - **Do not alter functional markup** when restyling: Vue component tags and directives
   (`component-auto-complete`, `v-model`, `@submit`), form field `id`/`name`, `t()` source
   strings, and route URLs (`Yii::app()->createUrl(...)`) must stay byte-identical — only
