@@ -11275,5 +11275,211 @@ class InterfaceController extends InterfaceCommon
 		$this->responseJson();
 	}
 
+	/**
+	 * POST /interface/firebaseCustomToken
+	 * Auth: Authorization: token <client_token> (verifyCustomer). Body: empty.
+	 *
+	 * Mints a Firebase CUSTOM TOKEN (an RS256 JWT signed with the project's
+	 * service-account key) whose uid === the authenticated customer's
+	 * client_uuid. The app exchanges it via signInWithCustomToken so Firestore
+	 * participant-only rules (firestore.rules) can enforce chat access with
+	 * request.auth.uid. Contract: MobileVue/docs/backend/firebase-custom-token.md.
+	 *
+	 * Response (success): { code:1, msg:"", details:{ token } }.
+	 * Config: FIREBASE_SA_JSON_PATH in k-config.php (git-ignored) points to the
+	 * service-account JSON. The php-jwt lib is already vendored.
+	 */
+	public function actionfirebaseCustomToken()
+	{
+		try {
+			$client_uuid = Yii::app()->user->client_uuid;
+			if (empty($client_uuid)) {
+				$this->msg = t("User not login or session has expired");
+				$this->responseJson();
+				return;
+			}
+
+			$sa = $this->loadFirebaseServiceAccount();
+			if (!$sa) {
+				$this->msg = t("Chat is not configured");
+				$this->responseJson();
+				return;
+			}
+
+			$now = time();
+			$claims = array(
+				'iss' => $sa['client_email'],
+				'sub' => $sa['client_email'],
+				'aud' => 'https://identitytoolkit.googleapis.com/google.identity.identitytoolkit.v1.IdentityToolkit',
+				'iat' => $now,
+				'exp' => $now + 3600, // Firebase custom tokens live up to 1 hour.
+				'uid' => (string) $client_uuid,
+			);
+
+			// RS256 signature with the service-account private key.
+			$token = JWT::encode($claims, $sa['private_key'], 'RS256');
+
+			$this->code = 1;
+			$this->msg = "";
+			$this->details = array('token' => $token);
+		} catch (Exception $e) {
+			$this->msg = t($e->getMessage());
+		}
+		$this->responseJson();
+	}
+
+	/**
+	 * Load Firebase service-account credentials from the JSON file at
+	 * FIREBASE_SA_JSON_PATH (defined in the git-ignored k-config.php). Keep the
+	 * file OUTSIDE the web root. Returns ['client_email','private_key'] or null.
+	 */
+	private function loadFirebaseServiceAccount()
+	{
+		if (!defined('FIREBASE_SA_JSON_PATH') || !FIREBASE_SA_JSON_PATH) {
+			return null;
+		}
+		$path = FIREBASE_SA_JSON_PATH;
+		if (!is_file($path) || !is_readable($path)) {
+			return null;
+		}
+		$json = json_decode(file_get_contents($path), true);
+		if (!is_array($json) || empty($json['client_email']) || empty($json['private_key'])) {
+			return null;
+		}
+		return array(
+			'client_email' => $json['client_email'],
+			'private_key'  => $json['private_key'],
+		);
+	}
+
+	/**
+	 * POST /interface/aichat
+	 * Auth: Authorization: token <client_token> (verifyCustomer).
+	 * Body: { message: string, history?: [{role:'user'|'assistant', content}], context?: string }.
+	 *
+	 * Server-side AI gateway (READ-ONLY). The model API key stays on the server
+	 * (TFE_AI_API_KEY in k-config.php); it is NEVER shipped to the app. The
+	 * assistant is given the signed-in customer's name plus any read-only
+	 * `context` the app already holds (e.g. a recent-orders summary the customer
+	 * is authorized to see), and replies in the user's language. It performs NO
+	 * write, order or payment action — those stay behind the app's own screens
+	 * and the future confirmation-card flow (Phase 4b).
+	 *
+	 * Response (success): { code:1, msg:"", details:{ reply } }.
+	 */
+	public function actionaichat()
+	{
+		try {
+			if (!defined('TFE_AI_API_KEY') || !TFE_AI_API_KEY) {
+				$this->msg = t("Assistant is not configured");
+				$this->responseJson();
+				return;
+			}
+
+			$message = isset($this->data['message']) ? trim($this->data['message']) : '';
+			if ($message === '') {
+				$this->msg = t("Empty message");
+				$this->responseJson();
+				return;
+			}
+			if (strlen($message) > 2000) {
+				$message = substr($message, 0, 2000);
+			}
+
+			$first_name = Yii::app()->user->first_name;
+			$lang = Yii::app()->language;
+			$app_context = isset($this->data['context']) ? substr((string) $this->data['context'], 0, 4000) : '';
+
+			$provider = defined('TFE_AI_PROVIDER') ? TFE_AI_PROVIDER : 'anthropic';
+			$model = defined('TFE_AI_MODEL') ? TFE_AI_MODEL : 'claude-sonnet-5';
+
+			$system = "You are the ThunderfamEats assistant, a concise, friendly guide for a multi-service super app "
+				. "(food, grocery, hotels & bookings, home services, taxi and more). "
+				. "The signed-in customer's first name is \"" . str_replace('"', '', $first_name) . "\". "
+				. "Reply in the user's language (current locale: " . $lang . "). "
+				. "You are READ-ONLY: never claim to place, modify, cancel, or pay for an order — instead point the user to the right screen "
+				. "(Cart, Checkout, Order tracking, Bookings). Keep answers short and helpful. "
+				. "Use only the CONTEXT below and the conversation; if you don't know something, say so plainly.\n\n"
+				. "CONTEXT:\n" . ($app_context !== '' ? $app_context : "(no extra context provided)");
+
+			$history = isset($this->data['history']) && is_array($this->data['history']) ? $this->data['history'] : array();
+
+			$reply = $this->aiCall($provider, $model, $system, $message, $history);
+
+			if ($reply === null || $reply === '') {
+				$this->msg = t("Assistant is unavailable right now");
+				$this->responseJson();
+				return;
+			}
+
+			$this->code = 1;
+			$this->msg = "";
+			$this->details = array('reply' => $reply);
+		} catch (Exception $e) {
+			$this->msg = t($e->getMessage());
+		}
+		$this->responseJson();
+	}
+
+	/**
+	 * Call the configured LLM provider and return the assistant text, or null on
+	 * failure. Uses cURL; the API key never leaves the server. v1 supports the
+	 * Anthropic Messages API.
+	 */
+	private function aiCall($provider, $model, $system, $message, $history)
+	{
+		$messages = array();
+		foreach ($history as $h) {
+			$role = isset($h['role']) ? $h['role'] : '';
+			$content = isset($h['content']) ? (string) $h['content'] : '';
+			if (($role === 'user' || $role === 'assistant') && $content !== '') {
+				$messages[] = array('role' => $role, 'content' => substr($content, 0, 2000));
+			}
+		}
+		$messages[] = array('role' => 'user', 'content' => $message);
+		// Keep the last 12 turns to bound token use.
+		if (count($messages) > 12) {
+			$messages = array_slice($messages, -12);
+		}
+
+		if ($provider !== 'anthropic') {
+			// Only Anthropic is wired in v1; extend here for other providers.
+			return null;
+		}
+
+		$payload = json_encode(array(
+			'model' => $model,
+			'max_tokens' => 600,
+			'system' => $system,
+			'messages' => $messages,
+		));
+
+		$ch = curl_init('https://api.anthropic.com/v1/messages');
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_POST, true);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
+		curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+		curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+			'content-type: application/json',
+			'x-api-key: ' . TFE_AI_API_KEY,
+			'anthropic-version: 2023-06-01',
+		));
+		$raw = curl_exec($ch);
+		$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+		$err = curl_error($ch);
+		curl_close($ch);
+
+		if ($raw === false || $httpcode < 200 || $httpcode >= 300) {
+			Yii::log('aichat provider error: ' . $httpcode . ' ' . $err, 'error', 'application.interface.aichat');
+			return null;
+		}
+
+		$data = json_decode($raw, true);
+		if (!is_array($data) || empty($data['content'][0]['text'])) {
+			return null;
+		}
+		return trim($data['content'][0]['text']);
+	}
+
 }
 // end class

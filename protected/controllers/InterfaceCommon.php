@@ -69,8 +69,8 @@ class InterfaceCommon extends CController
 					'fetchMonthlyData','OrderList','SearchOrder','SavedAddress','fetchCustomerAddresses','fetchpaymentmethod','getpaydelivery','fetchPayment',
 					'Savedpayment','setprimarypayment','fetchFavourites','fetchFavouritesItems','fetchfavouritesitems','savenotifications','submitReview','deleteMedia',
 					'fetchNotification','setViewednotification','PushSubscribe','PushSuscribeValidate','PushUnsubscribe','fetchfavouriteslocation','getMerchantFeedAuth',
-					'getMerchantInfoAuth'
-                 ), 
+					'getMerchantInfoAuth','firebaseCustomToken','aichat'
+                 ),
 				 'expression' => array('AppIdentity','verifyCustomer')
 			 ), 
 		 );
