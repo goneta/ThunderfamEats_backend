@@ -45,11 +45,16 @@ CSS/JS are enqueued by `protected/components/AssetsFrontBundle.php` (the `front-
   (`store/feed.php`, `/store/restaurants`), `tf-menu` (`store/menu.php`), `tf-checkout`
   (`account/checkout.php`), and `tf-locations` (`store/location_index.php`,
   `store/feed-locations.php`). Nav/footer theming is intentionally global.
-- **Home hero:** `store/index.php`'s hero is a centred, full-bleed band
-  (`.tf-hero.tf-hero-centered`) — a themed gradient with the isometric illustration bleeding
-  right and a translucent "Locate Your Location" pill + subtitle. The advantage cards are
-  filled red/yellow/blue (the `addons-*_new.png` art is drawn for those colours). The mockups'
-  chef + food-photo assets are not in the repo; add them to `assets/images/` to match pixel-for-pixel.
+- **Home banner:** `store/index.php`'s hero is a full-width, always-dark **"everything app"
+  banner** (`#main-search-banner` → `.tf-banner`, glassmorphic, neon palette): wordmark +
+  headline + subtitle, the preserved `component-auto-complete` search, a 10-card service
+  category grid (`.tf-cat`, green/blue/orange/red, inline-SVG icons) and a 4-item trust bar
+  (`.tf-trust`). **FR/EN copy** is selected in the view via
+  `$tfFr = stripos(Yii::app()->language,'fr')===0` — French when the site language is French,
+  English otherwise. The category cards are `href="javascript:;"` placeholders (no service
+  routes wired yet). The advantage cards below stay filled red/yellow/blue. The mockups'
+  photo strip / phone-mockup are AI composites not in the repo; add those images to
+  `assets/images/` and wire them into `.tf-banner` for a pixel match.
 - **feed.php note:** the real results route is `StoreController::actionRestaurants`, which
   passes `tabs_suggestion` / `responsive` / `place_details`. The bare `actionFeed`
   (`/store/feed`) renders the same view without those vars and 500s under `YII_DEBUG` — a

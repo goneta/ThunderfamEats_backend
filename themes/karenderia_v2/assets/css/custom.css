@@ -176,85 +176,89 @@ html.tf-merchant #top-navigation a { color: var(--tf-text); }
 /* ----------------------------------------------------------------------------
    5. Home hero
    ---------------------------------------------------------------------------- */
-/* Full-bleed hero with a centered translucent search pill (matches mockup).
-   Light = blue gradient, dark = deep gradient; the isometric illustration
-   bleeds off the right edge. */
-html.tf-home #main-search-banner {
+/* Full-width "everything app" banner (replaces the hero). Always dark and
+   glassmorphic, regardless of the site light/dark toggle, to match the design.
+   Neon service palette: green / blue / orange / red on a deep background. */
+html.tf-home #main-search-banner,
+html.tf-home[data-theme="dark"] #main-search-banner,
+html.tf-home[data-theme="light"] #main-search-banner {
   height: auto;
-  min-height: 460px;
+  min-height: auto;
   position: relative;
   overflow: hidden;
   padding: 0;
   display: block;
   border-bottom: none;
-  background: linear-gradient(120deg, #1f5fd0 0%, #3f7ce8 52%, #5a90f0 100%);
-}
-html.tf-home[data-theme="dark"] #main-search-banner {
-  background: linear-gradient(120deg, #0a0c10 0%, #14171d 58%, #1c2028 100%);
-}
-@media (prefers-color-scheme: dark) {
-  html.tf-home:not([data-theme="light"]) #main-search-banner {
-    background: linear-gradient(120deg, #0a0c10 0%, #14171d 58%, #1c2028 100%);
-  }
+  background:
+    radial-gradient(1100px 520px at 82% -12%, #14263f 0%, rgba(10,14,21,0) 60%),
+    linear-gradient(180deg, #0a0e15 0%, #080b11 100%);
 }
 
-.tf-hero.tf-hero-centered {
-  position: relative;
-  min-height: 460px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 56px 24px;
-}
-/* Isometric services art, bleeding off the right */
-.tf-hero-illustration {
-  position: absolute;
-  right: -20px;
-  bottom: 0;
-  height: 78%;
-  max-width: 52%;
-  object-fit: contain;
-  object-position: right bottom;
-  opacity: .96;
-  pointer-events: none;
-  z-index: 1;
-}
-/* Centered content (search pill + subtitle) */
-.tf-hero-center {
+.tf-banner {
   position: relative;
   z-index: 2;
-  width: 100%;
-  max-width: 560px;
-  text-align: center;
-}
-.tf-hero-sub {
-  color: #fff;
-  font-size: 1.05rem;
-  margin: 18px 0 0;
-  text-shadow: 0 1px 10px rgba(0, 0, 0, .35);
-}
-/* "Locate Your Location" search component as a translucent centered pill */
-html.tf-home .tf-hero-center .home-search-wrap {
-  width: 100%;
-  max-width: 460px;
+  max-width: 1280px;
   margin: 0 auto;
-  background: rgba(255, 255, 255, .16);
-  border: 1px solid rgba(255, 255, 255, .35);
-  border-radius: 999px;
-  padding: 6px 10px;
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
+  padding: 40px 24px 32px;
+  color: #eef1f5;
 }
-html.tf-home .tf-hero-center .home-search-wrap input,
-html.tf-home .tf-hero-center .home-search-wrap .el-input__inner {
-  background: transparent !important;
-  border: none !important;
-  color: #fff !important;
-  box-shadow: none !important;
-  text-align: center;
+
+/* Wordmark */
+.tf-wordmark { font-weight: 900; font-size: clamp(2rem, 4.6vw, 3.1rem); letter-spacing: .4px; line-height: 1; margin-bottom: 10px; }
+.tf-wordmark .tf-tf { color: #fff; text-shadow: 0 2px 0 rgba(0,0,0,.5); }
+.tf-wordmark .tf-e1 { color: #ea4335; } .tf-wordmark .tf-e2 { color: #f5b301; }
+.tf-wordmark .tf-e3 { color: #34a853; } .tf-wordmark .tf-e4 { color: #4285f4; }
+
+.tf-banner-title { font-size: clamp(1.7rem, 4.4vw, 2.9rem); font-weight: 800; line-height: 1.06; letter-spacing: -.01em; margin: 6px 0 12px; color: #fff; }
+.tf-banner-title .g { color: #34d17a; } .tf-banner-title .b { color: #4aa3ff; }
+.tf-banner-title .r { color: #ff5a5f; } .tf-banner-title .y { color: #f5b301; }
+.tf-banner-sub { color: #aeb6c2; max-width: 560px; font-size: 1.02rem; line-height: 1.5; margin: 0 0 22px; }
+
+/* Location search preserved, styled as a modern search field */
+html.tf-home .tf-banner .home-search-wrap {
+  width: 100%; max-width: 520px; margin: 0 0 28px;
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.14);
+  border-radius: 14px;
+  padding: 6px 12px;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 }
-html.tf-home .tf-hero-center .home-search-wrap input::placeholder,
-html.tf-home .tf-hero-center .home-search-wrap .el-input__inner::placeholder { color: rgba(255,255,255,.9) !important; }
+html.tf-home .tf-banner .home-search-wrap input,
+html.tf-home .tf-banner .home-search-wrap .el-input__inner {
+  background: transparent !important; border: none !important; color: #fff !important; box-shadow: none !important;
+}
+html.tf-home .tf-banner .home-search-wrap input::placeholder,
+html.tf-home .tf-banner .home-search-wrap .el-input__inner::placeholder { color: #9aa3b0 !important; }
+
+/* Service category grid */
+.tf-cat-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 15px; }
+.tf-cat {
+  display: flex; flex-direction: column; align-items: flex-start; gap: 9px;
+  min-height: 116px; padding: 15px 16px; border-radius: 16px; text-decoration: none;
+  background: rgba(255,255,255,.03);
+  border: 1px solid var(--c, #34d17a);
+  box-shadow: 0 0 22px -14px var(--c), 0 12px 30px rgba(0,0,0,.35);
+  backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+  transition: transform .18s ease, box-shadow .22s ease, background-color .22s ease;
+}
+.tf-cat:hover { transform: translateY(-4px); background: rgba(255,255,255,.05); box-shadow: 0 0 26px -6px var(--c), 0 16px 38px rgba(0,0,0,.5); }
+.tf-cat-ico { width: 32px; height: 32px; color: var(--c); }
+.tf-cat-ico svg { width: 100%; height: 100%; display: block; fill: none; stroke: var(--c); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.tf-cat b { color: var(--c); font-size: 1.02rem; font-weight: 700; line-height: 1.2; }
+.tf-cat span { color: #9aa3b0; font-size: .8rem; line-height: 1.3; }
+.tf-cat-green { --c: #34d17a; } .tf-cat-blue { --c: #4aa3ff; }
+.tf-cat-orange { --c: #f0a53a; } .tf-cat-red { --c: #ff6065; }
+
+/* Trust bar */
+.tf-trust { display: grid; grid-template-columns: repeat(4, 1fr); gap: 22px; margin-top: 30px; padding-top: 24px; border-top: 1px solid rgba(255,255,255,.08); }
+.tf-trust-item { display: flex; gap: 12px; align-items: flex-start; }
+.tf-trust-ico { width: 34px; height: 34px; flex: 0 0 34px; color: var(--c, #34d17a); }
+.tf-trust-ico svg { width: 100%; height: 100%; fill: none; stroke: var(--c, #34d17a); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.tf-trust-item h6 { color: #fff; font-weight: 700; margin: 0 0 3px; font-size: .96rem; }
+.tf-trust-item p { color: #98a1ad; margin: 0; font-size: .84rem; line-height: 1.35; }
+.tf-trust-green { --c: #34d17a; } .tf-trust-blue { --c: #4aa3ff; }
+.tf-trust-orange { --c: #f0a53a; } .tf-trust-red { --c: #ff6065; }
 
 /* ----------------------------------------------------------------------------
    6. Section titles
@@ -702,8 +706,9 @@ html.tf-locations .btn-black:hover { opacity: .9; color: var(--tf-bg); }
    13. Responsive
    ---------------------------------------------------------------------------- */
 @media (max-width: 991px) {
-  .tf-hero.tf-hero-centered { padding: 44px 20px; }
-  .tf-hero-illustration { opacity: .35; max-width: 78%; height: 62%; }
+  .tf-banner { padding: 32px 18px 26px; }
+  .tf-cat-grid { grid-template-columns: repeat(3, 1fr); }
+  .tf-trust { grid-template-columns: repeat(2, 1fr); }
   .tf-advantages { grid-template-columns: 1fr; }
   .tf-steps, .tf-why-grid { grid-template-columns: 1fr; gap: 26px; }
   html.tf-merchant #vue-merchant-signup { margin-top: 24px; }
@@ -714,7 +719,9 @@ html.tf-locations .btn-black:hover { opacity: .9; color: var(--tf-bg); }
   .tf-steps, .tf-why-grid { grid-template-columns: repeat(3, 1fr); }
 }
 @media (max-width: 575px) {
-  .tf-hero-title { font-size: 2rem; }
   .tf-section-title { font-size: 1.35rem; }
   html.tf-home .section-benefits .benefits { height: 175px; }
+  .tf-cat-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+  .tf-cat { min-height: 104px; padding: 13px 13px; }
+  .tf-trust { grid-template-columns: 1fr; gap: 16px; }
 }

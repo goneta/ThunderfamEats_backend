@@ -348,3 +348,47 @@ each area. Per-file docs: [`docs/README.md`](docs/README.md).
   repo's assets; the hero approximates them with a gradient + isometric art. Add those images
   and wire them into `#main-search-banner` for a pixel match.
 - Deep theming still excludes some inner pages (account, wallet, orders history).
+
+### 2026-07-24 — New "everything app" home banner (neon, glassmorphic, FR/EN)
+
+**Objectives**
+- Replace the home hero with the full-width dark "everything app" banner from the new mockups
+  (green/blue/orange/red neon service palette, glassmorphic, modern, mobile-responsive), with
+  a French version under French locale and an English version under English. Presentational.
+
+**What was changed**
+- **Home banner** (`views/store/index.php` + `custom.css` §5): replaced the centred hero with a
+  full-width, always-dark `.tf-banner` (glassmorphic, neon palette): the ThunderfamEats
+  wordmark, a colour-accented headline (`.tf-banner-title`) + subtitle, the preserved
+  `component-auto-complete` location search, a **10-card service category grid**
+  (`.tf-cat-grid`/`.tf-cat` — Home Services, Barber, Hairdresser, Book Taxi, Hotel,
+  Book Restaurants, Order Food, Grocery, Delivery, Takeout — each a neon-outlined glass card
+  with an inline-SVG icon in green/blue/orange/red) and a **4-item trust bar** (`.tf-trust`:
+  Trusted & Verified, Fast & Convenient, Quality Service, Available Near You).
+- **FR/EN**: the view computes `$tfFr = stripos((string)Yii::app()->language,'fr')===0` and
+  emits French copy when the site language starts with `fr`, English otherwise. This delivers
+  both language versions out of the box without depending on translation-DB entries.
+- **Responsive**: category grid 5 → 3 → 2 columns (≤991 / ≤575), trust bar 4 → 2 → 1; verified
+  no horizontal overflow.
+- Icons are inline SVGs (no icon-font dependency); the banner is always dark regardless of the
+  site light/dark toggle, matching the mockups.
+
+**Verification**
+- Static preview (served via `python -m http.server`, removed before commit): computed styles
+  confirmed gradient banner, 5-col grid, per-colour neon borders/icons (green #34d17a, blue
+  #4aa3ff, orange #f0a53a, red #ff6065), 16px glass cards with backdrop-blur, 10 cards + 4 trust
+  items, and responsive collapse with no overflow. WAMP was offline; live check + hard-refresh
+  is on the owner's list. `component-auto-complete` left byte-identical.
+
+**Files modified**
+- `themes/karenderia_v2/views/store/index.php`,
+  `themes/karenderia_v2/assets/css/custom.css`, `themes/karenderia_v2/AGENTS.md`,
+  `docs/custom.css.md`, `CLAUDE.md`.
+
+**Known limitations / next steps**
+- Category cards are `href="javascript:;"` placeholders; wire each to its real service/listing
+  route when those exist.
+- The mockup's photo strip and phone-mockup render are AI composites not in the repo; add the
+  image assets to `assets/images/` and place them in `.tf-banner` for a pixel match.
+- The neon palette is applied to the banner; rolling it across all inner pages (menu/checkout/
+  account) is a further step.

@@ -26,13 +26,15 @@ makes the redesign additive and easy to revert (empty the file).
    `@media (prefers-color-scheme: dark)` block applies the dark tokens when the user hasn't
    explicitly chosen (`:root:not([data-theme="light"])`).
 3. **Global** — buttons (`.btn-green`, `.tf-btn*`), top nav, and the theme-toggle button.
-4. **Home (`html.tf-home`)** — a full-bleed **centered** hero (`#main-search-banner` →
-   `.tf-hero.tf-hero-centered`): a themed gradient (blue in light, deep gradient in dark), the
-   isometric illustration (`.tf-hero-illustration`) bleeding off the right, and centred content
-   (`.tf-hero-center`) with the "Locate Your Location" search styled as a **translucent pill**
-   plus a subtitle (`.tf-hero-sub`). Then the "Business type" heading, **filled colour**
-   advantage cards (`.tf-advantages`/`.tf-adv-card` — red/yellow/blue, white text), promo cards
-   (`.section-benefits .benefits`), join banner and app section.
+4. **Home (`html.tf-home`)** — a full-width, always-dark **"everything app" banner**
+   (`#main-search-banner` → `.tf-banner`, glassmorphic, neon service palette): the ThunderfamEats
+   wordmark, a headline (`.tf-banner-title`) + subtitle, the preserved "Locate Your Location"
+   search (`.home-search-wrap`), a **service category grid** (`.tf-cat-grid`/`.tf-cat` — 10
+   neon-outlined cards in green/blue/orange/red with inline-SVG icons) and a **trust bar**
+   (`.tf-trust`/`.tf-trust-item` — 4 items). FR/EN copy is chosen in the view from
+   `Yii::app()->language`. Then the "Business type" heading, **filled colour** advantage cards
+   (`.tf-advantages`/`.tf-adv-card`), promo cards (`.section-benefits .benefits`), join banner
+   and app section.
 5. **Merchant (`html.tf-merchant`)** — hero (`.tf-merchant-hero`), the signup form card
    (`#vue-merchant-signup`), a new "How it works" section (`.tf-how`/`.tf-steps`), and the
    restyled "Why partner" grid (`.partner-section`).
@@ -45,8 +47,8 @@ makes the redesign additive and easy to revert (empty the file).
    `.el-card` panels, the menu category sidebar (`.sticky-sidebar` + `.menu-category`), form
    controls, and the location-mode sidebar/results. Theming only, no markup changes.
 8. **Footer** — global `.sub-footer` / `footer` theming.
-9. **Responsive** — breakpoints at 991px / 767px / 575px collapse grids; the centred hero
-   dims and shrinks its illustration.
+9. **Responsive** — breakpoints at 991px / 575px collapse grids; the banner category grid goes
+   5 → 3 → 2 columns and the trust bar 4 → 2 → 1, with no horizontal overflow.
 
 ## Inputs / Outputs
 
