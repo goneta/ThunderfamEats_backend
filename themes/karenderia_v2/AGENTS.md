@@ -39,10 +39,17 @@ CSS/JS are enqueued by `protected/components/AssetsFrontBundle.php` (the `front-
   `views/layouts/top-nav.php` (`#tf-theme-toggle`) flips it and persists to `localStorage`
   (`tf-theme`); a click handler sits at the end of `main-layout.php`. Absent a saved choice,
   `prefers-color-scheme` decides.
-- **Page scoping:** `store/index.php` (`tf-home`), `merchant/merchant-signup.php`
-  (`tf-merchant`) and `store/feed.php` (`tf-feed`, the `/store/restaurants` results page) each
-  add their class to `<html>` via a one-line inline script so page-specific restyles in
-  `custom.css` don't leak to other pages. Nav/footer theming is intentionally global.
+- **Page scoping:** each redesigned view adds a class to `<html>` via a one-line inline script
+  so page-specific restyles in `custom.css` don't leak to other pages — `tf-home`
+  (`store/index.php`), `tf-merchant` (`merchant/merchant-signup.php`), `tf-feed`
+  (`store/feed.php`, `/store/restaurants`), `tf-menu` (`store/menu.php`), `tf-checkout`
+  (`account/checkout.php`), and `tf-locations` (`store/location_index.php`,
+  `store/feed-locations.php`). Nav/footer theming is intentionally global.
+- **Home hero:** `store/index.php`'s hero is a centred, full-bleed band
+  (`.tf-hero.tf-hero-centered`) — a themed gradient with the isometric illustration bleeding
+  right and a translucent "Locate Your Location" pill + subtitle. The advantage cards are
+  filled red/yellow/blue (the `addons-*_new.png` art is drawn for those colours). The mockups'
+  chef + food-photo assets are not in the repo; add them to `assets/images/` to match pixel-for-pixel.
 - **feed.php note:** the real results route is `StoreController::actionRestaurants`, which
   passes `tabs_suggestion` / `responsive` / `place_details`. The bare `actionFeed`
   (`/store/feed`) renders the same view without those vars and 500s under `YII_DEBUG` — a

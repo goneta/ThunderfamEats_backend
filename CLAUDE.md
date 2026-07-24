@@ -300,3 +300,51 @@ each area. Per-file docs: [`docs/README.md`](docs/README.md).
 **Known limitations / next steps**
 - The location-mode results view (`feed-locations.php`) is not themed (site runs address mode).
 - Menu / cart / checkout pages still use the legacy look; extend `--tf-*` theming there next.
+
+### 2026-07-24 — New home hero (centered) + extend theme to menu/cart/checkout/location
+
+**Objectives**
+- Rework the home hero to match a second set of mockups (a full-bleed hero with a **centered**
+  translucent "Locate Your Location" pill + subtitle, and **filled colour** advantage cards),
+  in light and dark; and extend the `--tf-*` theming to the remaining customer pages
+  (menu, cart, checkout, location-mode). Presentational only.
+
+**What was changed**
+- **Home hero redesign** (`views/store/index.php` + `custom.css` §5): replaced the earlier
+  two-column hero (heading left / illustration right) with a centred, full-bleed band
+  `.tf-hero.tf-hero-centered` — a themed gradient (blue in light, deep gradient in dark), the
+  isometric `full-header@2x.png` bleeding off the right (`.tf-hero-illustration`), and centred
+  content (`.tf-hero-center`) with the existing `component-auto-complete` styled as a
+  translucent pill plus a subtitle ("Your favorite services, delivered fast"). Removed the big
+  `.tf-hero-title` heading (mockups have none). The `component-auto-complete` is byte-identical.
+- **Filled advantage cards** (`custom.css` §7): `.tf-adv-1/2/3` are now solid red/yellow/blue
+  with white text and the illustration filling the top — the `addons-*_new.png` art is drawn
+  for those colours. (Markup unchanged from the previous entry.)
+- **Menu / cart / checkout / location theming** (`custom.css` §12c + page markers): added
+  `tf-menu` (`store/menu.php`), `tf-checkout` (`account/checkout.php`) and `tf-locations`
+  (`store/location_index.php`, `store/feed-locations.php`) `<html>` markers, and rules theming
+  page backgrounds, headings/text, Bootstrap `.card`/element-plus `.el-card` panels, the menu
+  category sidebar (`.sticky-sidebar`/`.menu-category`), form controls, and the location-mode
+  sidebar/results — all via the existing tokens, light/dark. No structural markup changes on
+  these pages.
+
+**Verification**
+- Static preview (served via `python -m http.server`, removed before commit) screenshotted in
+  both themes: light hero = blue gradient + centred translucent pill + subtitle + isometric
+  bleed; dark hero = deep gradient equivalent; advantage cards render as filled red/yellow/blue
+  with white copy; responsive collapse confirmed. The live WAMP host was offline at commit time,
+  so live-server verification is on the owner's checklist (hard-refresh to clear CSS cache).
+
+**Files modified**
+- `themes/karenderia_v2/views/store/index.php`, `themes/karenderia_v2/views/store/menu.php`,
+  `themes/karenderia_v2/views/store/location_index.php`,
+  `themes/karenderia_v2/views/store/feed-locations.php`,
+  `themes/karenderia_v2/views/account/checkout.php`,
+  `themes/karenderia_v2/assets/css/custom.css`, `themes/karenderia_v2/AGENTS.md`,
+  `docs/custom.css.md`, `CLAUDE.md`.
+
+**Known limitations / next steps**
+- The hero's chef illustration and food-photography background from the mockups are not in the
+  repo's assets; the hero approximates them with a gradient + isometric art. Add those images
+  and wire them into `#main-search-banner` for a pixel match.
+- Deep theming still excludes some inner pages (account, wallet, orders history).

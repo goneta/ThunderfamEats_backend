@@ -26,9 +26,13 @@ makes the redesign additive and easy to revert (empty the file).
    `@media (prefers-color-scheme: dark)` block applies the dark tokens when the user hasn't
    explicitly chosen (`:root:not([data-theme="light"])`).
 3. **Global** — buttons (`.btn-green`, `.tf-btn*`), top nav, and the theme-toggle button.
-4. **Home (`html.tf-home`)** — hero (`#main-search-banner` → `.tf-hero` two-column), section
-   titles, advantage cards (`.tf-advantages`/`.tf-adv-card`), promo cards
-   (`.section-benefits .benefits` with illustration backgrounds), join banner, app section.
+4. **Home (`html.tf-home`)** — a full-bleed **centered** hero (`#main-search-banner` →
+   `.tf-hero.tf-hero-centered`): a themed gradient (blue in light, deep gradient in dark), the
+   isometric illustration (`.tf-hero-illustration`) bleeding off the right, and centred content
+   (`.tf-hero-center`) with the "Locate Your Location" search styled as a **translucent pill**
+   plus a subtitle (`.tf-hero-sub`). Then the "Business type" heading, **filled colour**
+   advantage cards (`.tf-advantages`/`.tf-adv-card` — red/yellow/blue, white text), promo cards
+   (`.section-benefits .benefits`), join banner and app section.
 5. **Merchant (`html.tf-merchant`)** — hero (`.tf-merchant-hero`), the signup form card
    (`#vue-merchant-signup`), a new "How it works" section (`.tf-how`/`.tf-steps`), and the
    restyled "Why partner" grid (`.partner-section`).
@@ -36,8 +40,13 @@ makes the redesign additive and easy to revert (empty the file).
    background, the filter sidebar as a card (`.section-filter`), restaurant result cards
    (a `.tf-store-card` wrapper added inside each `.list-items` column), the "Show more"
    button, and the fast-delivery banner.
-7. **Footer** — global `.sub-footer` / `footer` theming.
-8. **Responsive** — breakpoints at 991px / 767px / 575px collapse grids and stack the hero.
+7. **Menu / cart / checkout / location (`html.tf-menu`, `html.tf-checkout`,
+   `html.tf-locations`)** — page background, headings/text, Bootstrap `.card` + element-plus
+   `.el-card` panels, the menu category sidebar (`.sticky-sidebar` + `.menu-category`), form
+   controls, and the location-mode sidebar/results. Theming only, no markup changes.
+8. **Footer** — global `.sub-footer` / `footer` theming.
+9. **Responsive** — breakpoints at 991px / 767px / 575px collapse grids; the centred hero
+   dims and shrinks its illustration.
 
 ## Inputs / Outputs
 
@@ -70,9 +79,13 @@ variables and transforms; no runtime cost of note.
 
 ## Known limitations
 
-- Deep theming (page background/cards) is scoped to the redesigned pages (home, merchant
-  signup, restaurants/feed); other inner pages (menu, cart, checkout) keep the legacy look but
-  inherit the themed nav/footer, so a toggled dark mode is only fully realized on those pages.
+- Deep theming now covers home, merchant signup, restaurants/feed, menu, cart, checkout and
+  the location-mode results; remaining deep inner pages (account, wallet, orders) keep the
+  legacy look but inherit the themed nav/footer.
+- The home hero's chef illustration and food-photography background shown in the source
+  mockups are **not** in the theme's asset set; the hero approximates them with a themed
+  gradient plus the existing isometric illustration. Drop those images into
+  `assets/images/` and wire them into `#main-search-banner` for a pixel match.
 - The location-mode restaurants view (`feed-locations.php`, used only when
   `home_search_mode = "location"`) is not yet covered; this site runs in address mode.
 - The merchant form keeps its real functional fields (store name, address autocomplete,

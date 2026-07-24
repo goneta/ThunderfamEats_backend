@@ -9,10 +9,9 @@
   </div>
 <!-- KEN MODIFICATIONS  -->
   <div class="container-fluid" id="main-search-banner">
-    <div class="tf-hero">
-      <div class="tf-hero-text">
-         <h1 class="tf-hero-title"><?php echo t("Your local multi-service partner")?></h1>
-         <p class="tf-hero-sub"><?php echo t("Order, track and quickly receive all your essential products and services.")?></p>
+    <div class="tf-hero tf-hero-centered">
+      <img class="tf-hero-illustration" src="<?php echo Yii::app()->theme->baseUrl?>/assets/images/full-header@2x.png" alt="" aria-hidden="true">
+      <div class="tf-hero-center">
           <div class="home-search-wrap" >
             
            <component-auto-complete
@@ -30,11 +29,9 @@
 
           </div>
           <!-- home-search-wrap -->
+          <p class="tf-hero-sub"><?php echo t("Your favorite services, delivered fast")?></p>
       </div>
-      <!-- tf-hero-text -->
-      <div class="tf-hero-art">
-        <img src="<?php echo Yii::app()->theme->baseUrl?>/assets/images/full-header@2x.png" alt="<?php echo CHtml::encode(t("ThunderfamEats services"))?>">
-      </div>
+      <!-- tf-hero-center -->
     </div>
     <!-- tf-hero -->
   </div>

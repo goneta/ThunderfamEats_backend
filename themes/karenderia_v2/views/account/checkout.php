@@ -1,3 +1,6 @@
+<!-- ThunderfamEats redesign: mark page for scoped theming -->
+<script>document.documentElement.classList.add('tf-checkout');</script>
+
 <div class="container-fluid page-grey">
 
 <div class="container">

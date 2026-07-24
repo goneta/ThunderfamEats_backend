@@ -1,4 +1,7 @@
 
+<!-- ThunderfamEats redesign: mark page for scoped theming -->
+<script>document.documentElement.classList.add('tf-locations');</script>
+
 <div id="feed-locations" class="container-fluid" style="min-height:calc(80vh);"  >
 
 

@@ -1,3 +1,6 @@
+<!-- ThunderfamEats redesign: mark page for scoped theming -->
+<script>document.documentElement.classList.add('tf-menu');</script>
+
 <!--COMPONENTS NEW ORDER-->
 <div id="components-modal-neworder">
 <components-neworder 

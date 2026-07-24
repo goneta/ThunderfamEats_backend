@@ -1,3 +1,6 @@
+<!-- ThunderfamEats redesign: mark page for scoped theming -->
+<script>document.documentElement.classList.add('tf-locations');</script>
+
 <div id="vm_home_search_location">
       <div class="d-block d-lg-none">
         <div class="mobile-home-banner"></div>
