@@ -141,9 +141,9 @@ fbq('track', 'PageView');
 		// (JSON array). The feed Vue includes these tag names in the getMerchantFeed
 		// filters (see assets/js/front.js), and CMerchantListingV1::preFilter's
 		// "tags" case restricts merchants to those carrying any of the tags.
-		$service_code = Yii::app()->input->get('service');
-		if(!empty($service_code)){
-			$service_tags = CMerchantListingV1::serviceTags($service_code);
+		$service_card = Yii::app()->input->get('service');
+		if(!empty($service_card)){
+			$service_tags = CMerchantListingV1::serviceTags($service_card);
 			if(!empty($service_tags)){
 				ScriptUtility::registerScript(array(
 					"var service_tags=".CJavaScript::encode($service_tags).";",
