@@ -47,9 +47,18 @@ CSS/JS are enqueued by `protected/components/AssetsFrontBundle.php` (the `front-
   `store/feed-locations.php`). Nav/footer theming is intentionally global.
 - **Nav logo:** the top-nav site logo (`components/views/site-logo.php`, `class_name`
   `top-logo`) renders the **ThunderfamEats brand image** (`/images/logo_thunderfameats.jpeg`,
-  a wordmark on black) via `.tf-nav-logo-img`, with rounded corners so it reads as a clean
-  logo chip on either a light or dark nav, replacing the admin-uploaded square image.
-  Footer/mobile placements keep the admin image.
+  a wordmark on black) via `.tf-nav-logo-img` — but only for **guests**
+  (`Yii::app()->user->isGuest`); **logged-in** users keep the square admin logo icon.
+  Rounded corners make the wordmark read as a clean chip on either a light or dark nav.
+  Footer/mobile placements always keep the admin image.
+- **Category → service listing:** each banner category card links to
+  `/store/restaurants?service=<code>`. `StoreController::actionRestaurants` emits a
+  `service_filter` JS var, the address-mode feed Vue (`assets/js/front.js`, `#vue-feed`)
+  includes it in the `getMerchantFeed`/`getFeedV1` filters, and
+  `CMerchantListingV1::preFilter` adds an **additive** `service` case that restricts merchants
+  to those with a `st_services_fee` row for that `st_services.service_code`. No-op without the
+  param, so the default feed is unchanged. The card `service` codes in `store/index.php` must
+  match the live `st_services.service_code` values (adjust per the service setup).
 - **Home banner:** `store/index.php`'s hero is a full-width, always-dark **"everything app"
   banner** (`#main-search-banner` → `.tf-banner`, glassmorphic, neon palette): headline +
   subtitle (no wordmark — that now lives in the nav), the preserved `component-auto-complete`

@@ -130,12 +130,22 @@ fbq('track', 'PageView');
 	public function actionRestaurants()
 	{
 
-		ScriptUtility::registerScript(array(			
-			"var isGuest='".CJavaScript::quote(Yii::app()->user->isGuest)."';",		
+		ScriptUtility::registerScript(array(
+			"var isGuest='".CJavaScript::quote(Yii::app()->user->isGuest)."';",
 		),'is_guest');
 
+		// Service-category filter passed from a home banner category link
+		// (/store/restaurants?service=<code>). Emits `service_filter` which the
+		// feed Vue includes in the getMerchantFeed filters (see assets/js/front.js).
+		$service_filter = Yii::app()->input->get('service');
+		if(!empty($service_filter)){
+			ScriptUtility::registerScript(array(
+				"var service_filter='".CJavaScript::quote($service_filter)."';",
+			),'service_filter');
+		}
+
 		$setttings = Yii::app()->params['settings'];
-        $home_search_mode = isset($setttings['home_search_mode'])?$setttings['home_search_mode']:'address';		
+        $home_search_mode = isset($setttings['home_search_mode'])?$setttings['home_search_mode']:'address';
 		$home_search_mode = !empty($home_search_mode)?$home_search_mode:'address';
 		$location_searchtype = isset($setttings['location_searchtype'])?$setttings['location_searchtype']:'';
 		$enabled_registration = isset($setttings['merchant_enabled_registration'])? ($setttings['merchant_enabled_registration']==1?true:false) :false;

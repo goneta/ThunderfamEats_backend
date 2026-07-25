@@ -424,3 +424,42 @@ each area. Per-file docs: [`docs/README.md`](docs/README.md).
   banner's illustrative labels). A safe implementation means adding a service filter to the
   merchant feed + a route and testing against the live DB, so it was deferred pending the
   owner's confirmation of the mapping/approach.
+
+### 2026-07-25 — Logo shows only for guests + service-filtered category listing
+
+**What was changed**
+- **Nav logo (guests only):** `components/views/site-logo.php` now shows the ThunderfamEats
+  brand image (`/images/logo_thunderfameats.jpeg`) in the top nav only when
+  `Yii::app()->user->isGuest`; **logged-in** users keep the square admin logo icon.
+- **Category → service-filtered feed** (the owner chose: link to the existing restaurants
+  feed, filtered to the clicked service). Implemented by mirroring the existing
+  `cuisine_filter` mechanism:
+  - `views/store/index.php`: each banner category card links to
+    `/store/restaurants?service=<code>` (codes: home_services, barber, hairdresser, book_taxi,
+    hotel, book_restaurants, order_food, grocery, delivery, takeout).
+  - `StoreController::actionRestaurants`: reads `?service=` and emits `var service_filter=...`.
+  - `assets/js/front.js` (`#vue-feed`): adds a `service` field, reads `service_filter` on
+    mount, and includes `'service'` in the `getFeedV1` filters.
+  - `CMerchantListingV1::preFilter`: adds an **additive** `case "service"` that restricts
+    merchants to those with a `{{services_fee}}` row joined to `{{services}}` on
+    `service_code`. No-op when absent, so the default feed query is unchanged.
+
+**Why**
+- The owner asked to move branding into the nav (guests) while keeping the compact square icon
+  for signed-in users, and to make category clicks list merchants offering that service.
+
+**Verification / caveats**
+- No local PHP/DB (WAMP offline) — the filter is additive and fails safe: without `?service=`
+  the feed is byte-for-byte unchanged; with an unknown code it simply returns no merchants
+  rather than erroring. The card `service` codes are label-derived and **must be aligned to the
+  live `st_services.service_code` values** (the demo dump only has delivery/pickup/dinein/pos;
+  production has more). Owner to verify on the live server and adjust codes as needed.
+- The feed is location-gated: `/store/restaurants` redirects to `/` until a delivery location
+  is set, so a category click filters once the location (search pill) is chosen.
+
+**Files modified / added**
+- Modified: `themes/karenderia_v2/views/store/index.php`,
+  `protected/components/views/site-logo.php`,
+  `protected/controllers/StoreController.php`,
+  `protected/components/CMerchantListingV1.php`, `assets/js/front.js`,
+  `themes/karenderia_v2/AGENTS.md`, `docs/custom.css.md`, `CLAUDE.md`.

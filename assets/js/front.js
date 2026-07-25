@@ -6441,6 +6441,7 @@ const app_feed = Vue.createApp({
 			data_attributes : [],
 			data_cuisine : [],
 			cuisine : [],
+			service : '',
 			sortby : '',
 			price_range : 0,
 			max_delivery_fee : 0,
@@ -6470,8 +6471,13 @@ const app_feed = Vue.createApp({
 		this.pauseReasonList();
 				
 		if ((typeof cuisine_filter !== "undefined") && ( cuisine_filter !== null)) {
-			let $cuisine_filter = JSON.parse(cuisine_filter);				
+			let $cuisine_filter = JSON.parse(cuisine_filter);
 			this.cuisine = $cuisine_filter;
+		}
+
+		// Pre-seed the service-category filter when arriving from a banner category link
+		if ((typeof service_filter !== "undefined") && ( service_filter !== null)) {
+			this.service = service_filter;
 		}
 
 		console.log('[FEED] Calling Search(false)');
@@ -6662,15 +6668,16 @@ const app_feed = Vue.createApp({
 			   'currency_code' : currency_code,
 			   'filters':{
 			   	  'cuisine': this.cuisine,
+			   	  'service': this.service,
 			   	  'sortby' : this.sortby,
 			   	  'price_range': this.price_range,
 			   	  'max_delivery_fee': this.max_delivery_fee,
 			   	  'rating': this.rating,
-			   	  'transaction_type':this.transaction_type,			   	  
+			   	  'transaction_type':this.transaction_type,
 			   	  'whento_deliver': this.whento_deliver,
 			   	  'delivery_date': this.delivery_date,
-			   	  'delivery_time': this.delivery_time,				  
-			   },	   	    
+			   	  'delivery_time': this.delivery_time,
+			   },
 			};		
 			
 			// Log request parameters

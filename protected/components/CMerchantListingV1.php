@@ -510,7 +510,7 @@ class CMerchantListingV1
 					     }
 						break;
 					
-					case "cuisine":		
+					case "cuisine":
 					    if(is_array($val) && count($val)>=1){
 					    	$in = '';
 					    	foreach ($val as $cuisine_id) {
@@ -521,13 +521,30 @@ class CMerchantListingV1
 								$and.="\n\n";
 								$and.=" AND a.merchant_id IN (
 								 select merchant_id from {{cuisine_merchant}}
-								 where merchant_id = a.merchant_id				 
+								 where merchant_id = a.merchant_id
 								 and cuisine_id IN ($in)
-							   )";		 
+							   )";
 						   }
 					    }
 					    break;
-							
+
+					// Filter merchants by a service category (service_code). Additive:
+					// only applies when a non-empty service filter is supplied, so the
+					// default feed query is unchanged. Merchants are linked to services
+					// via {{services_fee}} (merchant_id, service_id) -> {{services}}.
+					case "service":
+					    $service_code = is_array($val) ? trim((string)reset($val)) : trim((string)$val);
+					    if($service_code !== ''){
+					    	$and.="\n\n";
+					    	$and.=" AND a.merchant_id IN (
+					    	 select sf.merchant_id from {{services_fee}} sf
+					    	 inner join {{services}} s on s.service_id = sf.service_id
+					    	 where sf.merchant_id = a.merchant_id
+					    	 and s.service_code = ".q($service_code)."
+					    	)";
+					    }
+					    break;
+
 					case "max_delivery_fee":    
 					    $max_delivery_fee = floatval($val);
 					    if($max_delivery_fee>0){
