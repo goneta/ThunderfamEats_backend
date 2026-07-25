@@ -392,3 +392,35 @@ each area. Per-file docs: [`docs/README.md`](docs/README.md).
   image assets to `assets/images/` and place them in `.tf-banner` for a pixel match.
 - The neon palette is applied to the banner; rolling it across all inner pages (menu/checkout/
   account) is a further step.
+
+### 2026-07-25 — Nav wordmark logo + remove banner wordmark
+
+**What was changed**
+- Removed the `.tf-wordmark` text from the top of the home banner (`store/index.php`) and its
+  orphaned CSS in `custom.css`; the banner now opens with the headline.
+- Replaced the top-nav square site logo with the **ThunderfamEats brand image** the owner
+  supplied at `/images/logo_thunderfameats.jpeg`: `components/views/site-logo.php` emits an
+  `<img class="tf-nav-logo-img">` when `class_name` contains `top-logo` (footer/mobile
+  placements keep the admin image). New CSS section 4b sizes it (40px tall, 32px on mobile)
+  and rounds the corners so the on-black wordmark reads as a clean logo chip on either a light
+  or dark nav.
+
+**Why**
+- The user asked to move the ThunderfamEats branding out of the banner and into the nav (in
+  place of the square logo) and dropped the real logo file into `images/`.
+
+**Files modified / added**
+- Added: `images/logo_thunderfameats.jpeg` (brand logo asset).
+- Modified: `themes/karenderia_v2/views/store/index.php`,
+  `protected/components/views/site-logo.php`,
+  `themes/karenderia_v2/assets/css/custom.css`, `themes/karenderia_v2/AGENTS.md`,
+  `docs/custom.css.md`, `CLAUDE.md`.
+
+**Not done here (needs decision) — category → merchant listing**
+- The banner's 10 category cards remain `href="javascript:;"` placeholders. Making a click
+  "list all merchants that have the service" requires the platform's real service-code
+  taxonomy (the web storefront is food-delivery-focused and has no per-service listing yet,
+  and the true services — Livraison/Pickup/Dinein/Book A Taxi/Book A Room/… — differ from the
+  banner's illustrative labels). A safe implementation means adding a service filter to the
+  merchant feed + a route and testing against the live DB, so it was deferred pending the
+  owner's confirmation of the mapping/approach.

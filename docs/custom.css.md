@@ -26,9 +26,13 @@ makes the redesign additive and easy to revert (empty the file).
    `@media (prefers-color-scheme: dark)` block applies the dark tokens when the user hasn't
    explicitly chosen (`:root:not([data-theme="light"])`).
 3. **Global** — buttons (`.btn-green`, `.tf-btn*`), top nav, and the theme-toggle button.
+3b. **Nav logo** — `.top-logo .tf-nav-logo-img`: the ThunderfamEats brand image
+   (`/images/logo_thunderfameats.jpeg`) that replaces the square site logo in the top nav,
+   with rounded corners so it reads as a clean chip on a light or dark nav. Rendered by
+   `components/views/site-logo.php` for the `top-logo` placement.
 4. **Home (`html.tf-home`)** — a full-width, always-dark **"everything app" banner**
-   (`#main-search-banner` → `.tf-banner`, glassmorphic, neon service palette): the ThunderfamEats
-   wordmark, a headline (`.tf-banner-title`) + subtitle, the preserved "Locate Your Location"
+   (`#main-search-banner` → `.tf-banner`, glassmorphic, neon service palette): a headline
+   (`.tf-banner-title`) + subtitle, the preserved "Locate Your Location"
    search (`.home-search-wrap`), a **service category grid** (`.tf-cat-grid`/`.tf-cat` — 10
    neon-outlined cards in green/blue/orange/red with inline-SVG icons) and a **trust bar**
    (`.tf-trust`/`.tf-trust-item` — 4 items). FR/EN copy is chosen in the view from

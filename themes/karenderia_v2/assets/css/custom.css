@@ -174,6 +174,21 @@ html.tf-merchant #top-navigation a { color: var(--tf-text); }
 }
 
 /* ----------------------------------------------------------------------------
+   4b. Nav logo (ThunderfamEats brand image) — replaces the square site logo in
+   the top nav. The asset is a wordmark on black; rounded corners make it read as
+   a clean logo chip on either a light or dark nav. Rendered by
+   components/views/site-logo.php (the `top-logo` placement).
+   ---------------------------------------------------------------------------- */
+.top-logo .tf-nav-logo-img {
+  height: 40px;
+  width: auto;
+  max-width: 220px;
+  display: block;
+  border-radius: 8px;
+}
+@media (max-width: 575px) { .top-logo .tf-nav-logo-img { height: 32px; } }
+
+/* ----------------------------------------------------------------------------
    5. Home hero
    ---------------------------------------------------------------------------- */
 /* Full-width "everything app" banner (replaces the hero). Always dark and
@@ -202,12 +217,6 @@ html.tf-home[data-theme="light"] #main-search-banner {
   padding: 40px 24px 32px;
   color: #eef1f5;
 }
-
-/* Wordmark */
-.tf-wordmark { font-weight: 900; font-size: clamp(2rem, 4.6vw, 3.1rem); letter-spacing: .4px; line-height: 1; margin-bottom: 10px; }
-.tf-wordmark .tf-tf { color: #fff; text-shadow: 0 2px 0 rgba(0,0,0,.5); }
-.tf-wordmark .tf-e1 { color: #ea4335; } .tf-wordmark .tf-e2 { color: #f5b301; }
-.tf-wordmark .tf-e3 { color: #34a853; } .tf-wordmark .tf-e4 { color: #4285f4; }
 
 .tf-banner-title { font-size: clamp(1.7rem, 4.4vw, 2.9rem); font-weight: 800; line-height: 1.06; letter-spacing: -.01em; margin: 6px 0 12px; color: #fff; }
 .tf-banner-title .g { color: #34d17a; } .tf-banner-title .b { color: #4aa3ff; }

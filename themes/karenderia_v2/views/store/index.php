@@ -12,8 +12,6 @@
   <div class="container-fluid" id="main-search-banner">
     <div class="tf-banner">
 
-      <div class="tf-wordmark"><span class="tf-tf">Thunderfam</span><span class="tf-e1">E</span><span class="tf-e2">a</span><span class="tf-e3">t</span><span class="tf-e4">s</span></div>
-
       <h1 class="tf-banner-title"><?php if($tfFr): ?>Tous vos besoins quotidiens, <span class="g">à portée</span> <span class="b">de main</span> <span class="r">!</span><?php else: ?>All Your Daily Needs, <span class="g">One</span> <span class="b">Tap</span> <span class="r">Away!</span><?php endif; ?></h1>
       <p class="tf-banner-sub"><?php echo $tfFr ? "Services, réservations, commandes et livraisons ; — tout est réuni au même endroit." : "Services, booking, ordering and delivery; — everything in one place."; ?></p>
 
