@@ -33,9 +33,11 @@ makes the redesign additive and easy to revert (empty the file).
 4. **Home (`html.tf-home`)** — a full-width, always-dark **"everything app" banner**
    (`#main-search-banner` → `.tf-banner`, glassmorphic, neon service palette): a headline
    (`.tf-banner-title`) + subtitle, the preserved "Locate Your Location"
-   search (`.home-search-wrap`), a **service category grid** (`.tf-cat-grid`/`.tf-cat` — 10
+   search (`.home-search-wrap`), a **service category grid** (`.tf-cat-grid`/`.tf-cat` — 12
    neon cards cycling green/blue/orange/red, each with a subtle per-colour tinted fill and a
-   centred icon + label, matching the app "Catégories" theme) and a **trust bar**
+   centred icon + label, matching the app "Catégories" theme; each card links to the
+   restaurants feed filtered by its backend Tag(s) — see `CMerchantListingV1::serviceTagMap`)
+   and a **trust bar**
    (`.tf-trust`/`.tf-trust-item` — 4 items). FR/EN copy is chosen in the view from
    `Yii::app()->language`. Then the "Business type" heading, **filled colour** advantage cards
    (`.tf-advantages`/`.tf-adv-card`), promo cards (`.section-benefits .benefits`), join banner

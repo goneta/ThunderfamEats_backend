@@ -34,11 +34,12 @@
       <!-- home-search-wrap -->
 
       <?php
-      /* Each service category links to the restaurants feed filtered by its
-         service_code (?service=<code>). The feed reads `service_filter`
-         (StoreController::actionRestaurants) and CMerchantListingV1::preFilter
-         restricts merchants to those offering that service. The codes below must
-         match st_services.service_code in the live DB (adjust per service setup). */
+      /* Each service category links to the restaurants feed filtered by the backend
+         Tags it maps to (Attributes -> Tags / {{tags}}). The card code (?service=<code>)
+         is resolved to tag name(s) by CMerchantListingV1::serviceTagMap in
+         StoreController::actionRestaurants, the feed sends those tags, and
+         CMerchantListingV1::preFilter's "tags" case restricts merchants to those
+         carrying the tag(s). The card codes below are keys into serviceTagMap. */
       $tfSvc = function($code){ return Yii::app()->createUrl('/store/restaurants', array('service'=>$code)); };
       ?>
       <div class="tf-cat-grid">
@@ -51,7 +52,9 @@
         <a href="<?php echo $tfSvc('order_food')?>" class="tf-cat tf-cat-orange"><span class="tf-cat-ico"><svg viewBox="0 0 24 24"><path d="M7 3v6a2 2 0 0 0 4 0V3"/><path d="M9 9v12"/><path d="M17 3c-1.5 1-2.5 3-2.5 6S16 15 17 15v6"/></svg></span><b><?php echo $tfFr?'Commander des repas':'Order Food'?></b></a>
         <a href="<?php echo $tfSvc('grocery')?>" class="tf-cat tf-cat-red"><span class="tf-cat-ico"><svg viewBox="0 0 24 24"><path d="M3 4h2l2.2 11h10L20 7H6"/><circle cx="9" cy="19.5" r="1.4"/><circle cx="17" cy="19.5" r="1.4"/></svg></span><b><?php echo $tfFr?'Courses':'Grocery'?></b></a>
         <a href="<?php echo $tfSvc('delivery')?>" class="tf-cat tf-cat-green"><span class="tf-cat-ico"><svg viewBox="0 0 24 24"><path d="M12 3l8 4v10l-8 4-8-4V7z"/><path d="M4 7l8 4 8-4"/><path d="M12 11v10"/></svg></span><b><?php echo $tfFr?"Livraison de biens & d'articles":'Delivery Good & Items'?></b></a>
-        <a href="<?php echo $tfSvc('takeout')?>" class="tf-cat tf-cat-blue"><span class="tf-cat-ico"><svg viewBox="0 0 24 24"><path d="M6 8h12l-1 12H7z"/><path d="M9 8V6.5a3 3 0 0 1 6 0V8"/></svg></span><b><?php echo $tfFr?'À emporter':'Takeout'?></b></a>
+        <a href="<?php echo $tfSvc('takeaway')?>" class="tf-cat tf-cat-blue"><span class="tf-cat-ico"><svg viewBox="0 0 24 24"><path d="M6 8h12l-1 12H7z"/><path d="M9 8V6.5a3 3 0 0 1 6 0V8"/></svg></span><b><?php echo $tfFr?'À emporter':'Takeaway'?></b></a>
+        <a href="<?php echo $tfSvc('transport')?>" class="tf-cat tf-cat-orange"><span class="tf-cat-ico"><svg viewBox="0 0 24 24"><path d="M5 11l1.5-4.5A2 2 0 0 1 8.4 5h7.2a2 2 0 0 1 1.9 1.5L19 11"/><path d="M4 11h16v6H4z"/><circle cx="7.5" cy="17" r="1.4"/><circle cx="16.5" cy="17" r="1.4"/></svg></span><b><?php echo $tfFr?'Transport':'Transport'?></b></a>
+        <a href="<?php echo $tfSvc('education')?>" class="tf-cat tf-cat-red"><span class="tf-cat-ico"><svg viewBox="0 0 24 24"><path d="M2 8l10-4 10 4-10 4z"/><path d="M6 10v5c0 1.5 2.7 3 6 3s6-1.5 6-3v-5"/><path d="M22 8v6"/></svg></span><b><?php echo $tfFr?'Éducation':'Education'?></b></a>
       </div>
       <!-- tf-cat-grid -->
 

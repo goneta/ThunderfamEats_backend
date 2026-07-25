@@ -497,3 +497,47 @@ each area. Per-file docs: [`docs/README.md`](docs/README.md).
 **Notes**
 - Rubik loads from Google Fonts (consistent with the site's existing CDN use); self-host it if
   you prefer no external dependency. The exact Uber Move is proprietary and was not used.
+
+### 2026-07-26 — Service cards filter by backend Tags (st_tags) instead of service codes
+
+**What was changed**
+- Replaced the placeholder `service_code` filtering with the real backend **Tags** taxonomy
+  (Admin → Attributes → Tags / `st_tags`). Merchant↔tag assignments live in `{{option}}`
+  (`option_name='tags'`, `option_value=tag_id`); the filter joins `{{option}}` → `{{tags}}` on
+  `tag_id` and matches by `tag_name`.
+- `CMerchantListingV1`: added `serviceTagMap()` (single source of truth: card code → backend
+  tag name(s)) and `serviceTags($code)`; replaced the `service` case in `preFilter` with a
+  `tags` case that restricts merchants to those carrying any of the given tag names (additive,
+  no-op when absent). Supports multi-tag cards.
+- `StoreController::actionRestaurants`: resolves `?service=<code>` → tag names via
+  `serviceTagMap()` and emits a `service_tags` JSON array (was `service_filter`).
+- `assets/js/front.js` (`#vue-feed`): reads `service_tags` into a `tags` array and sends it as
+  `filters.tags` (replacing the old `service` field).
+- `views/store/index.php`: card links unchanged (`?service=<code>`) but the code→tag mapping is
+  now authoritative; renamed the `takeout` card to `takeaway`, and **added Transport and
+  Education cards** — the grid is now 12 cards cycling green/blue/orange/red.
+
+**Mapping (card code → st_tags.tag_name)** — `CMerchantListingV1::serviceTagMap()`:
+hairdresser→Hairdressers · barber→Barbers · book_taxi→Taxi · hotel→Hotel ·
+book_restaurants→Restaurants · order_food→Restaurants+Takeaway · grocery→Shops ·
+delivery→Pharmacy+Supermarket · home_services→Home Services · transport→Rental Car+Transport ·
+education→School · takeaway→Takeaway.
+
+**Why**
+- The owner clarified that service categories are the backend Tags, not service codes; the
+  frontend must filter merchants by the real admin-managed tags so the two stay in sync.
+
+**Dynamic / verification**
+- Merchant↔tag data is fully admin-driven; only the card→tag *names* map is code (survives
+  tag-id changes). Verified the 12-card grid + new icons render with no overflow via a static
+  preview. Filtering itself needs live-DB verification (WAMP/DB offline here): the `tags` case
+  is additive so the default feed is unchanged; a tag with no merchants simply returns none.
+  Assumes merchant tags are stored in `{{option}}` as `option_value=tag_id` (per
+  `MerchantTools::getMerchantOptions` + the admin tag dropdown) — confirm on the live DB.
+
+**Files modified**
+- `protected/components/CMerchantListingV1.php`,
+  `protected/controllers/StoreController.php`, `assets/js/front.js`,
+  `themes/karenderia_v2/views/store/index.php`,
+  `themes/karenderia_v2/AGENTS.md`, `protected/components/AGENTS.md`,
+  `docs/custom.css.md`, `CLAUDE.md`.

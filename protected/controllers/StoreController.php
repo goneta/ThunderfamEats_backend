@@ -135,13 +135,20 @@ fbq('track', 'PageView');
 		),'is_guest');
 
 		// Service-category filter passed from a home banner category link
-		// (/store/restaurants?service=<code>). Emits `service_filter` which the
-		// feed Vue includes in the getMerchantFeed filters (see assets/js/front.js).
-		$service_filter = Yii::app()->input->get('service');
-		if(!empty($service_filter)){
-			ScriptUtility::registerScript(array(
-				"var service_filter='".CJavaScript::quote($service_filter)."';",
-			),'service_filter');
+		// (/store/restaurants?service=<code>). The card code is resolved to its
+		// backend Tag name(s) (Attributes -> Tags / {{tags}}) via the single
+		// mapping in CMerchantListingV1::serviceTagMap, and emitted as `service_tags`
+		// (JSON array). The feed Vue includes these tag names in the getMerchantFeed
+		// filters (see assets/js/front.js), and CMerchantListingV1::preFilter's
+		// "tags" case restricts merchants to those carrying any of the tags.
+		$service_code = Yii::app()->input->get('service');
+		if(!empty($service_code)){
+			$service_tags = CMerchantListingV1::serviceTags($service_code);
+			if(!empty($service_tags)){
+				ScriptUtility::registerScript(array(
+					"var service_tags=".CJavaScript::encode($service_tags).";",
+				),'service_tags');
+			}
 		}
 
 		$setttings = Yii::app()->params['settings'];

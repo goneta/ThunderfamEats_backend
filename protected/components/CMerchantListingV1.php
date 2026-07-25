@@ -364,9 +364,45 @@ class CMerchantListingV1
 		return $distance_exp;			
 	}
 	
+	/**
+	 * Single source of truth mapping each home service card (code) to the backend
+	 * Tag name(s) it lists (Attributes -> Tags / {{tags}}.tag_name). A card may map
+	 * to several tags. Filtering resolves these tag names against merchants at query
+	 * time (see the "tags" case in preFilter), so adding/removing merchants from a
+	 * tag in the Admin Dashboard updates the cards automatically. Only rename here
+	 * if an administrator renames the tag itself.
+	 */
+	public static function serviceTagMap()
+	{
+		return array(
+			'hairdresser'      => array('Hairdressers'),
+			'barber'           => array('Barbers'),
+			'book_taxi'        => array('Taxi'),
+			'hotel'            => array('Hotel'),
+			'book_restaurants' => array('Restaurants'),
+			'order_food'       => array('Restaurants', 'Takeaway'),
+			'grocery'          => array('Shops'),
+			'delivery'         => array('Pharmacy', 'Supermarket'),
+			'home_services'    => array('Home Services'),
+			'transport'        => array('Rental Car', 'Transport'),
+			'education'        => array('School'),
+			'takeaway'         => array('Takeaway'),
+		);
+	}
+
+	/**
+	 * Resolve a service-card code to its backend tag name(s). Unknown code -> [].
+	 */
+	public static function serviceTags($code='')
+	{
+		$map = self::serviceTagMap();
+		$code = trim((string)$code);
+		return isset($map[$code]) ? $map[$code] : array();
+	}
+
 	public static function preFilter($filter=array())
-	{				
-		$and = '';				
+	{
+		$and = '';
 
 		if(isset($filter['filters'])){
 			if(!is_array($filter['filters']) && count((array)$filter['filters'])<=1){
@@ -528,19 +564,28 @@ class CMerchantListingV1
 					    }
 					    break;
 
-					// Filter merchants by a service category (service_code). Additive:
-					// only applies when a non-empty service filter is supplied, so the
-					// default feed query is unchanged. Merchants are linked to services
-					// via {{services_fee}} (merchant_id, service_id) -> {{services}}.
-					case "service":
-					    $service_code = is_array($val) ? trim((string)reset($val)) : trim((string)$val);
-					    if($service_code !== ''){
+					// Filter merchants by service-category TAGS (Attributes -> Tags / {{tags}}).
+					// The home service cards map to one or more backend tag_name values (see
+					// CMerchantListingV1::serviceTagMap); a card may map to several tags
+					// (e.g. Order Food -> Restaurants + Takeaway). A merchant's tags are stored
+					// in {{option}} (option_name='tags', option_value=tag_id). Additive: only
+					// applies when tag names are supplied, so the default feed query is unchanged.
+					case "tags":
+					    $tag_names = is_array($val) ? $val : array($val);
+					    $in = '';
+					    foreach ($tag_names as $tag_name) {
+					    	$tag_name = trim((string)$tag_name);
+					    	if($tag_name !== ''){ $in .= q($tag_name).","; }
+					    }
+					    $in = rtrim($in, ',');
+					    if($in !== ''){
 					    	$and.="\n\n";
 					    	$and.=" AND a.merchant_id IN (
-					    	 select sf.merchant_id from {{services_fee}} sf
-					    	 inner join {{services}} s on s.service_id = sf.service_id
-					    	 where sf.merchant_id = a.merchant_id
-					    	 and s.service_code = ".q($service_code)."
+					    	 select o.merchant_id from {{option}} o
+					    	 inner join {{tags}} t on t.tag_id = o.option_value
+					    	 where o.merchant_id = a.merchant_id
+					    	 and o.option_name = 'tags'
+					    	 and t.tag_name IN ($in)
 					    	)";
 					    }
 					    break;

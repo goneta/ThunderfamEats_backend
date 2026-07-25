@@ -19,6 +19,10 @@ Governs `protected/components/` including `jobs/` and `views/`. Inherits rules f
   `CScrapmenu`, `Citems`, `BItemInstant`.
 - **Merchant / catalog:** `CMerchantListingV1`, `CMerchantMenu`, `MerchantMenuHelper`,
   `CMerchantSignup`, `CSavedStore`, `CFeaturedLocation`, `CCuisine`, `CServices`, `CReviews`.
+  - `CMerchantListingV1::preFilter` builds the merchant-feed WHERE from client filters
+    (cuisine, price, rating, delivery fee, and **`tags`** — the home service-category filter
+    that restricts merchants by backend Tag names via `{{option}}`+`{{tags}}`).
+    `serviceTagMap()` is the single card-code → tag-name(s) map used by the storefront.
 - **Identity / auth:** `App*Identity` (User/Merchant/Driver/Kitchen/Tableside),
   `Customer*Identity*`, `Merchant*Identity*`, `DriverIdentity`, `WebUserCustomer`,
   `JWTwrapper`, `CSocialLogin`, `CRecaptcha`.

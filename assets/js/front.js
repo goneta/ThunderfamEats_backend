@@ -6441,7 +6441,7 @@ const app_feed = Vue.createApp({
 			data_attributes : [],
 			data_cuisine : [],
 			cuisine : [],
-			service : '',
+			tags : [],
 			sortby : '',
 			price_range : 0,
 			max_delivery_fee : 0,
@@ -6475,9 +6475,11 @@ const app_feed = Vue.createApp({
 			this.cuisine = $cuisine_filter;
 		}
 
-		// Pre-seed the service-category filter when arriving from a banner category link
-		if ((typeof service_filter !== "undefined") && ( service_filter !== null)) {
-			this.service = service_filter;
+		// Pre-seed the service-category tag filter when arriving from a banner category
+		// link. `service_tags` is a JSON array of backend tag names emitted by
+		// StoreController::actionRestaurants (resolved from the card via serviceTagMap).
+		if ((typeof service_tags !== "undefined") && ( service_tags !== null)) {
+			this.tags = service_tags;
 		}
 
 		console.log('[FEED] Calling Search(false)');
@@ -6668,7 +6670,7 @@ const app_feed = Vue.createApp({
 			   'currency_code' : currency_code,
 			   'filters':{
 			   	  'cuisine': this.cuisine,
-			   	  'service': this.service,
+			   	  'tags': this.tags,
 			   	  'sortby' : this.sortby,
 			   	  'price_range': this.price_range,
 			   	  'max_delivery_fee': this.max_delivery_fee,
