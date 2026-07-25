@@ -463,3 +463,37 @@ each area. Per-file docs: [`docs/README.md`](docs/README.md).
   `protected/controllers/StoreController.php`,
   `protected/components/CMerchantListingV1.php`, `assets/js/front.js`,
   `themes/karenderia_v2/AGENTS.md`, `docs/custom.css.md`, `CLAUDE.md`.
+
+### 2026-07-25 — Transparent nav logo + tinted category theme + Rubik font
+
+**What was changed**
+- **Nav logo → transparent PNG, resized:** `components/views/site-logo.php` now serves
+  `/images/logo_thunderfameats.png` (transparent wordmark) for guests, and `custom.css` §4b
+  sizes it small (30px tall, 26px on mobile, `object-fit: contain`, no rounded chip) so the
+  full wordmark is visible without clipping. Added `images/logo_thunderfameats.png`.
+- **Service category theme (from the app "Catégories" mockup):** `custom.css` category cards
+  (`.tf-cat`) now have a **subtle per-colour tinted fill** (`--cbg`) and **centred icon +
+  label**, and the 10 cards cycle the full **green/blue/orange/red** neon palette
+  (`store/index.php` card classes reassigned). The card `service` links are unchanged.
+- **Site font → Rubik:** loaded from Google Fonts in `views/layouts/main-layout.php` and
+  applied site-wide to text elements via `custom.css` §2b (`--tf-font`). Rubik is the closest
+  freely-licensed match to Uber's **proprietary "Uber Move"** typeface (which cannot legally be
+  embedded). Icon fonts (zmdi / fontawesome / element-plus) are deliberately not targeted, so
+  glyph icons keep rendering — verified via a static preview (body/headings/buttons resolve to
+  Rubik; a `.zmdi` element keeps `Material-Design-Iconic-Font`).
+
+**Why**
+- The owner asked to use the transparent PNG logo sized to be fully visible, apply the attached
+  neon category colour theme, and match the UberEats site font.
+
+**Files modified / added**
+- Added: `images/logo_thunderfameats.png`.
+- Modified: `themes/karenderia_v2/views/layouts/main-layout.php`,
+  `themes/karenderia_v2/views/store/index.php`,
+  `protected/components/views/site-logo.php`,
+  `themes/karenderia_v2/assets/css/custom.css`, `themes/karenderia_v2/AGENTS.md`,
+  `docs/custom.css.md`, `CLAUDE.md`.
+
+**Notes**
+- Rubik loads from Google Fonts (consistent with the site's existing CDN use); self-host it if
+  you prefer no external dependency. The exact Uber Move is proprietary and was not used.

@@ -34,6 +34,11 @@ CSS/JS are enqueued by `protected/components/AssetsFrontBundle.php` (the `front-
   light/dark theming, hero/cards/footer/signup styling). It loads last so it overrides
   `style.css` without editing it. Prefer adding presentational rules there over touching
   `style.css`. See [`docs/custom.css.md`](../../docs/custom.css.md).
+- **Site font:** the body font is **Rubik** (Google Fonts, loaded in
+  `views/layouts/main-layout.php`) — the closest freely-licensed match to Uber's proprietary
+  "Uber Move". `custom.css` §2b applies it to text elements only via `--tf-font`; icon fonts
+  (zmdi / fontawesome / `.el-icon`) are deliberately not targeted so glyph icons keep working.
+  Do not embed Uber's actual font files (proprietary).
 - **Light/dark theme:** driven by `data-theme` on `<html>`. A no-FOUC script in
   `views/layouts/main-layout.php` applies the saved theme before paint; a toggle button in
   `views/layouts/top-nav.php` (`#tf-theme-toggle`) flips it and persists to `localStorage`
@@ -46,11 +51,11 @@ CSS/JS are enqueued by `protected/components/AssetsFrontBundle.php` (the `front-
   (`account/checkout.php`), and `tf-locations` (`store/location_index.php`,
   `store/feed-locations.php`). Nav/footer theming is intentionally global.
 - **Nav logo:** the top-nav site logo (`components/views/site-logo.php`, `class_name`
-  `top-logo`) renders the **ThunderfamEats brand image** (`/images/logo_thunderfameats.jpeg`,
-  a wordmark on black) via `.tf-nav-logo-img` — but only for **guests**
-  (`Yii::app()->user->isGuest`); **logged-in** users keep the square admin logo icon.
-  Rounded corners make the wordmark read as a clean chip on either a light or dark nav.
-  Footer/mobile placements always keep the admin image.
+  `top-logo`) renders the **ThunderfamEats transparent wordmark PNG**
+  (`/images/logo_thunderfameats.png`) via `.tf-nav-logo-img` — but only for **guests**
+  (`Yii::app()->user->isGuest`); **logged-in** users keep the square admin logo icon. It is
+  sized small (30px tall, 26px on mobile; `object-fit: contain`) so the full wordmark is
+  visible without clipping. Footer/mobile placements always keep the admin image.
 - **Category → service listing:** each banner category card links to
   `/store/restaurants?service=<code>`. `StoreController::actionRestaurants` emits a
   `service_filter` JS var, the address-mode feed Vue (`assets/js/front.js`, `#vue-feed`)

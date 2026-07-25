@@ -96,6 +96,23 @@ html.tf-merchant .page-content {
 }
 
 /* ----------------------------------------------------------------------------
+   2b. Typography — Rubik, the closest freely-licensed match to Uber's
+   proprietary "Uber Move" typeface (loaded from Google Fonts in main-layout.php).
+   Applied to text elements only; icon fonts (zmdi / material-design-iconic /
+   fontawesome / element-plus `.el-icon`) are NOT targeted, so glyph icons keep
+   rendering with their own font-family.
+   ---------------------------------------------------------------------------- */
+:root { --tf-font: 'Rubik', system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
+body,
+h1, h2, h3, h4, h5, h6,
+p, a, ul, ol, li, blockquote, small, strong, b, em,
+button, input, select, textarea, label,
+.btn, .form-control, .custom-select, .nav-link, .dropdown-item,
+.el-button, .el-input__inner, .el-textarea__inner, .el-card {
+  font-family: var(--tf-font) !important;
+}
+
+/* ----------------------------------------------------------------------------
    3. Buttons
    ---------------------------------------------------------------------------- */
 .btn-green,
@@ -180,13 +197,13 @@ html.tf-merchant #top-navigation a { color: var(--tf-text); }
    components/views/site-logo.php (the `top-logo` placement).
    ---------------------------------------------------------------------------- */
 .top-logo .tf-nav-logo-img {
-  height: 40px;
+  height: 30px;
   width: auto;
-  max-width: 220px;
+  max-width: 170px;
+  object-fit: contain;
   display: block;
-  border-radius: 8px;
 }
-@media (max-width: 575px) { .top-logo .tf-nav-logo-img { height: 32px; } }
+@media (max-width: 575px) { .top-logo .tf-nav-logo-img { height: 26px; max-width: 140px; } }
 
 /* ----------------------------------------------------------------------------
    5. Home hero
@@ -240,24 +257,28 @@ html.tf-home .tf-banner .home-search-wrap .el-input__inner {
 html.tf-home .tf-banner .home-search-wrap input::placeholder,
 html.tf-home .tf-banner .home-search-wrap .el-input__inner::placeholder { color: #9aa3b0 !important; }
 
-/* Service category grid */
+/* Service category grid — neon cards with a subtle per-colour tinted fill and
+   centred icon + label, matching the app "Catégories" theme. */
 .tf-cat-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 15px; }
 .tf-cat {
-  display: flex; flex-direction: column; align-items: flex-start; gap: 9px;
-  min-height: 116px; padding: 15px 16px; border-radius: 16px; text-decoration: none;
-  background: rgba(255,255,255,.03);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  text-align: center; gap: 10px;
+  min-height: 128px; padding: 18px 14px; border-radius: 16px; text-decoration: none;
+  background: linear-gradient(180deg, rgba(255,255,255,.012) 0%, var(--cbg, rgba(255,255,255,.03)) 100%);
   border: 1px solid var(--c, #34d17a);
   box-shadow: 0 0 22px -14px var(--c), 0 12px 30px rgba(0,0,0,.35);
   backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
-  transition: transform .18s ease, box-shadow .22s ease, background-color .22s ease;
+  transition: transform .18s ease, box-shadow .22s ease, filter .22s ease;
 }
-.tf-cat:hover { transform: translateY(-4px); background: rgba(255,255,255,.05); box-shadow: 0 0 26px -6px var(--c), 0 16px 38px rgba(0,0,0,.5); }
-.tf-cat-ico { width: 32px; height: 32px; color: var(--c); }
+.tf-cat:hover { transform: translateY(-4px); filter: brightness(1.12); box-shadow: 0 0 26px -6px var(--c), 0 16px 38px rgba(0,0,0,.5); }
+.tf-cat-ico { width: 34px; height: 34px; color: var(--c); }
 .tf-cat-ico svg { width: 100%; height: 100%; display: block; fill: none; stroke: var(--c); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 .tf-cat b { color: var(--c); font-size: 1.02rem; font-weight: 700; line-height: 1.2; }
 .tf-cat span { color: #9aa3b0; font-size: .8rem; line-height: 1.3; }
-.tf-cat-green { --c: #34d17a; } .tf-cat-blue { --c: #4aa3ff; }
-.tf-cat-orange { --c: #f0a53a; } .tf-cat-red { --c: #ff6065; }
+.tf-cat-green  { --c: #34d17a; --cbg: rgba(52,209,122,.10); }
+.tf-cat-blue   { --c: #4aa3ff; --cbg: rgba(74,163,255,.10); }
+.tf-cat-orange { --c: #f0a53a; --cbg: rgba(240,165,58,.11); }
+.tf-cat-red    { --c: #ff6065; --cbg: rgba(255,96,101,.10); }
 
 /* Trust bar */
 .tf-trust { display: grid; grid-template-columns: repeat(4, 1fr); gap: 22px; margin-top: 30px; padding-top: 24px; border-top: 1px solid rgba(255,255,255,.08); }
