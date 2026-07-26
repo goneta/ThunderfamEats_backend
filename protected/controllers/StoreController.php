@@ -134,16 +134,17 @@ fbq('track', 'PageView');
 			"var isGuest='".CJavaScript::quote(Yii::app()->user->isGuest)."';",
 		),'is_guest');
 
-		// Service-category filter passed from a home banner category link
-		// (/store/restaurants?service=<code>). The card code is resolved to its
-		// backend Tag name(s) (Attributes -> Tags / {{tags}}) via the single
-		// mapping in CMerchantListingV1::serviceTagMap, and emitted as `service_tags`
-		// (JSON array). The feed Vue includes these tag names in the getMerchantFeed
-		// filters (see assets/js/front.js), and CMerchantListingV1::preFilter's
-		// "tags" case restricts merchants to those carrying any of the tags.
-		$service_card = Yii::app()->input->get('service');
-		if(!empty($service_card)){
-			$service_tags = CMerchantListingV1::serviceTags($service_card);
+		// Merchant-category (Tag) filter passed from a home category card
+		// (/store/restaurants?tag=<code>). The card code is resolved to its backend
+		// Tag name(s) (Attributes -> Tags / {{tags}}) via CMerchantListingV1::serviceTagMap
+		// and emitted as `service_tags` (JSON array). The feed Vue includes these tag
+		// names in the getMerchantFeed filters (see assets/js/front.js), and
+		// CMerchantListingV1::preFilter's "tags" case restricts merchants to those
+		// carrying any of the tags. This is Tag filtering only (st_tags) — it does not
+		// touch st_services / st_services_fee.
+		$tag_code = Yii::app()->input->get('tag');
+		if(!empty($tag_code)){
+			$service_tags = CMerchantListingV1::serviceTags($tag_code);
 			if(!empty($service_tags)){
 				ScriptUtility::registerScript(array(
 					"var service_tags=".CJavaScript::encode($service_tags).";",

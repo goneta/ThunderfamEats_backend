@@ -57,17 +57,20 @@ CSS/JS are enqueued by `protected/components/AssetsFrontBundle.php` (the `front-
   sized small (30px tall, 26px on mobile; `object-fit: contain`) so the full wordmark is
   visible without clipping. Footer/mobile placements always keep the admin image.
 - **Category → tag-based merchant listing:** each banner category card links to
-  `/store/restaurants?service=<code>`. The card code is resolved to backend **Tag** name(s)
-  (Attributes → Tags / `st_tags`) by the single map `CMerchantListingV1::serviceTagMap()`
-  (e.g. `order_food` → `Restaurants` + `Takeaway`, `delivery` → `Pharmacy` + `Supermarket`).
-  `StoreController::actionRestaurants` emits those tag names as a `service_tags` JSON array;
-  the address-mode feed Vue (`assets/js/front.js`, `#vue-feed`) sends them as `filters.tags`;
-  and `CMerchantListingV1::preFilter`'s **additive** `tags` case restricts merchants to those
+  `/store/restaurants?tag=<code>` (the URL param is **`tag`**, not `service` — these are
+  merchant categories from `st_tags`, unrelated to `st_services`). The card code is resolved
+  to backend **Tag** name(s) (Attributes → Tags / `st_tags`) by the single map
+  `CMerchantListingV1::serviceTagMap()` (e.g. `order_food` → `Restaurants` + `Takeaway`,
+  `delivery` → `Pharmacy` + `Supermarket`). `StoreController::actionRestaurants` reads `?tag=`,
+  emits the resolved tag names as a `service_tags` JSON array; the address-mode feed Vue
+  (`assets/js/front.js`, `#vue-feed`) sends them as `filters.tags`; and
+  `CMerchantListingV1::preFilter`'s **additive** `tags` case restricts merchants to those
   carrying any of the tags (`{{option}}` where `option_name='tags'` joined to `{{tags}}` on
   `tag_id`, matched by `tag_name`). No-op without the param, so the default feed is unchanged.
-  Merchant↔tag assignments are fully dynamic (managed in Admin → Attributes → Tags); only the
-  card→tag semantic map in `serviceTagMap()` is code, and it references tag **names** so it
-  survives tag-id changes.
+  This reuses the existing location-based restaurants feed (the page shown after "Locate your
+  location"); no separate page. Merchant↔tag assignments are fully dynamic (managed in Admin →
+  Attributes → Tags); only the card→tag semantic map in `serviceTagMap()` is code, and it
+  references tag **names** so it survives tag-id changes.
 - **Home banner:** `store/index.php`'s hero is a full-width, always-dark **"everything app"
   banner** (`#main-search-banner` → `.tf-banner`, glassmorphic, neon palette): headline +
   subtitle (no wordmark — that now lives in the nav), the preserved `component-auto-complete`

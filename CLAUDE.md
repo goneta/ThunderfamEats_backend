@@ -541,3 +541,36 @@ education→School · takeaway→Takeaway.
   `themes/karenderia_v2/views/store/index.php`,
   `themes/karenderia_v2/AGENTS.md`, `protected/components/AGENTS.md`,
   `docs/custom.css.md`, `CLAUDE.md`.
+
+### 2026-07-26 — Category `?tag=` URL + banner layout tweaks (title/grid/button)
+
+**What was changed**
+- **Tag URL param:** category cards now link to `/store/restaurants?tag=<code>` (was
+  `?service=<code>`) — reflecting that these are `st_tags` merchant categories, not
+  `st_services`. `store/index.php` renames the link helper `$tfSvc`→`$tfTag` (param `service`
+  →`tag`); `StoreController::actionRestaurants` reads `?tag=` (var `$tag_code`) and resolves it
+  via `CMerchantListingV1::serviceTagMap` → `service_tags`, unchanged downstream. The filtering
+  (preFilter `tags` case, `{{option}}`+`{{tags}}`) is the existing tag logic — reused, not a new
+  service filter. Still reuses the location-based restaurants feed (no separate page). Fixes the
+  incorrect `?service=barber` link; the reported redirect/connection error on the staging host
+  is a server-side redirect issue to confirm on the live server (the app logic doesn't loop).
+- **Banner title one line** (`custom.css` §5): `.tf-banner-title` gets `white-space: nowrap`
+  and a smaller responsive size (`clamp(0.92rem, 2.9vw, 2.2rem)`) so
+  "Tous vos besoins quotidiens, à portée de main !" stays on a single line.
+- **Category grid 6-per-row** (`custom.css` §12b): `.tf-cat-grid` is now `repeat(6, 1fr)`
+  (12 cards → 2 rows of 6); cards made more compact (min-height 104px, padding 14/10, icon
+  30px, label .9rem). Responsive 6 → 4 → 3 → 2 (breakpoints 1100/991/767/575), no overflow.
+- **Compact "Locate your location" button** (`custom.css` §5): `.home-search-wrap` max-width
+  330px (was 520px), tighter padding, smaller input/button font, with rules to compact the
+  green button rendered inside the search component.
+
+**Verification**
+- Static preview (removed before commit): title renders on one line with no horizontal
+  overflow; grid collapses correctly (6→3 at the pane width); search wrap constrained to 330px.
+- The `?tag=` filtering itself still needs the live-DB check (WAMP/DB offline here).
+
+**Files modified**
+- `protected/controllers/StoreController.php`,
+  `themes/karenderia_v2/views/store/index.php`,
+  `themes/karenderia_v2/assets/css/custom.css`,
+  `themes/karenderia_v2/AGENTS.md`, `CLAUDE.md`.

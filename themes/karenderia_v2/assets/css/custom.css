@@ -235,35 +235,47 @@ html.tf-home[data-theme="light"] #main-search-banner {
   color: #eef1f5;
 }
 
-.tf-banner-title { font-size: clamp(1.7rem, 4.4vw, 2.9rem); font-weight: 800; line-height: 1.06; letter-spacing: -.01em; margin: 6px 0 12px; color: #fff; }
+.tf-banner-title { font-size: clamp(0.92rem, 2.9vw, 2.2rem); font-weight: 800; line-height: 1.1; letter-spacing: -.02em; margin: 6px 0 12px; color: #fff; white-space: nowrap; }
 .tf-banner-title .g { color: #34d17a; } .tf-banner-title .b { color: #4aa3ff; }
 .tf-banner-title .r { color: #ff5a5f; } .tf-banner-title .y { color: #f5b301; }
 .tf-banner-sub { color: #aeb6c2; max-width: 560px; font-size: 1.02rem; line-height: 1.5; margin: 0 0 22px; }
 
-/* Location search preserved, styled as a modern search field */
+/* Location search preserved, styled as a modern search field — kept compact. */
 html.tf-home .tf-banner .home-search-wrap {
-  width: 100%; max-width: 520px; margin: 0 0 28px;
+  width: 100%; max-width: 330px; margin: 0 0 24px;
   background: rgba(255,255,255,.06);
   border: 1px solid rgba(255,255,255,.14);
-  border-radius: 14px;
-  padding: 6px 12px;
+  border-radius: 12px;
+  padding: 3px 8px;
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
 }
 html.tf-home .tf-banner .home-search-wrap input,
 html.tf-home .tf-banner .home-search-wrap .el-input__inner {
   background: transparent !important; border: none !important; color: #fff !important; box-shadow: none !important;
+  font-size: .9rem !important;
 }
 html.tf-home .tf-banner .home-search-wrap input::placeholder,
 html.tf-home .tf-banner .home-search-wrap .el-input__inner::placeholder { color: #9aa3b0 !important; }
+/* Compact the green "Locate your location" button rendered inside the search component */
+html.tf-home .tf-banner .home-search-wrap .btn,
+html.tf-home .tf-banner .home-search-wrap .btn-green,
+html.tf-home .tf-banner .home-search-wrap button {
+  font-size: .85rem !important;
+  padding: .34rem .7rem !important;
+  line-height: 1.2 !important;
+  border-radius: 8px !important;
+  white-space: nowrap;
+}
 
 /* Service category grid — neon cards with a subtle per-colour tinted fill and
    centred icon + label, matching the app "Catégories" theme. */
-.tf-cat-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 15px; }
+/* 6 cards per row (12 cards => 2 rows). Compact so all six fit comfortably. */
+.tf-cat-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 12px; }
 .tf-cat {
   display: flex; flex-direction: column; align-items: center; justify-content: center;
-  text-align: center; gap: 10px;
-  min-height: 128px; padding: 18px 14px; border-radius: 16px; text-decoration: none;
+  text-align: center; gap: 8px;
+  min-height: 104px; padding: 14px 10px; border-radius: 14px; text-decoration: none;
   background: linear-gradient(180deg, rgba(255,255,255,.012) 0%, var(--cbg, rgba(255,255,255,.03)) 100%);
   border: 1px solid var(--c, #34d17a);
   box-shadow: 0 0 22px -14px var(--c), 0 12px 30px rgba(0,0,0,.35);
@@ -271,10 +283,10 @@ html.tf-home .tf-banner .home-search-wrap .el-input__inner::placeholder { color:
   transition: transform .18s ease, box-shadow .22s ease, filter .22s ease;
 }
 .tf-cat:hover { transform: translateY(-4px); filter: brightness(1.12); box-shadow: 0 0 26px -6px var(--c), 0 16px 38px rgba(0,0,0,.5); }
-.tf-cat-ico { width: 34px; height: 34px; color: var(--c); }
+.tf-cat-ico { width: 30px; height: 30px; color: var(--c); }
 .tf-cat-ico svg { width: 100%; height: 100%; display: block; fill: none; stroke: var(--c); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
-.tf-cat b { color: var(--c); font-size: 1.02rem; font-weight: 700; line-height: 1.2; }
-.tf-cat span { color: #9aa3b0; font-size: .8rem; line-height: 1.3; }
+.tf-cat b { color: var(--c); font-size: .9rem; font-weight: 700; line-height: 1.2; }
+.tf-cat span { color: #9aa3b0; font-size: .78rem; line-height: 1.3; }
 .tf-cat-green  { --c: #34d17a; --cbg: rgba(52,209,122,.10); }
 .tf-cat-blue   { --c: #4aa3ff; --cbg: rgba(74,163,255,.10); }
 .tf-cat-orange { --c: #f0a53a; --cbg: rgba(240,165,58,.11); }
@@ -735,9 +747,12 @@ html.tf-locations .btn-black:hover { opacity: .9; color: var(--tf-bg); }
 /* ----------------------------------------------------------------------------
    13. Responsive
    ---------------------------------------------------------------------------- */
+@media (max-width: 1100px) {
+  .tf-cat-grid { grid-template-columns: repeat(4, 1fr); }
+}
 @media (max-width: 991px) {
   .tf-banner { padding: 32px 18px 26px; }
-  .tf-cat-grid { grid-template-columns: repeat(3, 1fr); }
+  .tf-cat-grid { grid-template-columns: repeat(4, 1fr); }
   .tf-trust { grid-template-columns: repeat(2, 1fr); }
   .tf-advantages { grid-template-columns: 1fr; }
   .tf-steps, .tf-why-grid { grid-template-columns: 1fr; gap: 26px; }
@@ -748,10 +763,13 @@ html.tf-locations .btn-black:hover { opacity: .9; color: var(--tf-bg); }
   .tf-advantages { grid-template-columns: repeat(3, 1fr); }
   .tf-steps, .tf-why-grid { grid-template-columns: repeat(3, 1fr); }
 }
+@media (max-width: 767px) {
+  .tf-cat-grid { grid-template-columns: repeat(3, 1fr); }
+}
 @media (max-width: 575px) {
   .tf-section-title { font-size: 1.35rem; }
   html.tf-home .section-benefits .benefits { height: 175px; }
-  .tf-cat-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
-  .tf-cat { min-height: 104px; padding: 13px 13px; }
+  .tf-cat-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .tf-cat { min-height: 96px; padding: 12px 10px; }
   .tf-trust { grid-template-columns: 1fr; gap: 16px; }
 }
