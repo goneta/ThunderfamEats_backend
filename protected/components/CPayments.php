@@ -227,6 +227,10 @@ class CPayments
 						$keys = CommonUtility::safeTrim($val['attr4']);
 						break;
 
+					case "cinetpay":
+						$keys = ''; // fully server-side flow — expose nothing
+						break;
+
 					case "squareup":
 						$keys = [
 							'application_id'=>CommonUtility::safeTrim($val['attr1']),

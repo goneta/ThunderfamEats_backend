@@ -108,6 +108,7 @@ return array(
 		'sumup'=>array(),
 		'mpgs'=>array(),
 		'touchpay'=>array(),
+		'cinetpay'=>array(),
     ),
 
 	'defaultController'=>'store',
@@ -174,6 +175,7 @@ return array(
 				'vivawallet/api/verifypayment',
 				'vivawallet/apiapp/verifypayment',
 				'vivawallet/webhook',
+				'cinetpay/api/*',
 				'tap/api/postpayment',
 				'tap/webhook',
 				'knet/verifypayment',

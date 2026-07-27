@@ -4,7 +4,7 @@
 
 Self-contained Yii modules. Two kinds: **payment gateways** (the majority) and **packaged
 feature add-ons** (mobile apps, driver, kitchen, POS, location search, menu clone). Modules
-are registered in `config/front_main.php` (and `console.php`) `modules` arrays. 23 module
+are registered in `config/front_main.php` (and `console.php`) `modules` arrays. 24 module
 directories on disk; ~60 gateways are enabled in config (some share a directory).
 
 ## Ownership
@@ -14,7 +14,7 @@ Governs `protected/modules/`. Inherits rules from `protected/AGENTS.md`.
 ## Layout of a gateway module
 
 Typical structure (see `touchpay/`, `stripe/`, `paypal/`, `razorpay/`, `mtn/`,
-`mercadopago/`, `vivawallet/`, `digital_wallet/`, `paydelivery/`, `cod/`, `bank/`):
+`mercadopago/`, `vivawallet/`, `cinetpay/`, `digital_wallet/`, `paydelivery/`, `cod/`, `bank/`):
 
 - `XxxModule.php` — module bootstrap.
 - `controllers/` — `ApiController` (app-facing), `ApiappController`, `WebhookController`
@@ -41,6 +41,12 @@ distributables and `filesupdate/*.sql`.
   unauthenticated and CSRF-exempt.
 - Payment components must route through / log via `CPayments` / `CPaymentLogger` for
   consistent, redacted transaction records.
+- `cinetpay/` (customer-facing label **Mobile Money**: Orange/MTN/Moov/Wave via the
+  CinetPay hosted checkout) is the reference for a fully server-side redirect gateway:
+  verify-first webhook (403 forge / 503 gateway-down), idempotent paid transition, unique
+  reference per attempt, credentials sanitized out of `fetchpaymentmethod`. Unit tests:
+  `php protected/modules/cinetpay/tests/run-tests.php`. Doc:
+  [`/docs/cinetpay-mobile-money.md`](../../docs/cinetpay-mobile-money.md).
 
 ## Do-not-touch-blindly
 

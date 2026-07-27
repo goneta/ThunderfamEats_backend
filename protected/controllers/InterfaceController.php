@@ -5344,6 +5344,24 @@ class InterfaceController extends InterfaceCommon
 		$this->responseJson();
 	}
 
+	/**
+	 * Gateways whose entire flow runs server-side must never ship their
+	 * credentials (API key / site id / HMAC secret) to the client. The app
+	 * only needs the routing fields for these codes.
+	 */
+	private static function sanitizeServerOnlyCredentials($payment_code, $credentials)
+	{
+		$server_only = array('cinetpay');
+		if (in_array($payment_code, $server_only) && is_array($credentials)) {
+			return array(
+				'is_live' => $credentials['is_live'] ?? 0,
+				'merchant_id' => $credentials['merchant_id'] ?? 0,
+				'merchant_type' => $credentials['merchant_type'] ?? '',
+			);
+		}
+		return $credentials;
+	}
+
 	public function actionfetchpaymentmethod()
 	{
 		try {
@@ -5362,6 +5380,7 @@ class InterfaceController extends InterfaceCommon
 					$payments_credentials = CPayments::getPaymentCredentials($merchant_id, '', $merchants->merchant_type);
 					foreach ($data as &$items) {
 						$items['credentials'] = $payments_credentials[$items['payment_code']] ?? null;
+						$items['credentials'] = self::sanitizeServerOnlyCredentials($items['payment_code'], $items['credentials']);
 					}
 				} catch (Exception $e) {
 				}
@@ -5371,6 +5390,7 @@ class InterfaceController extends InterfaceCommon
 					$payments_credentials = CPayments::getPaymentCredentials(0, '', 2);
 					foreach ($data as &$items) {
 						$items['credentials'] = $payments_credentials[$items['payment_code']] ?? null;
+						$items['credentials'] = self::sanitizeServerOnlyCredentials($items['payment_code'], $items['credentials']);
 					}
 				} catch (Exception $e) {
 				}

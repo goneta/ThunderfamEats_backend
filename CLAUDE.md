@@ -135,6 +135,51 @@ each area. Per-file docs: [`docs/README.md`](docs/README.md).
 
 ## Change Log
 
+### 2026-07-27 — CinetPay "Mobile Money" payment gateway (Orange/MTN/Moov/Wave)
+
+**New gateway module `protected/modules/cinetpay/`** — customer-facing label is
+**Mobile Money**; CinetPay is the technical provider aggregating Orange Money,
+MTN MoMo, Moov Money and Wave behind its hosted checkout (single checkout entry,
+operators chosen on CinetPay's page). Follows the `touchpay`/`vivawallet`/
+`razorpay` module conventions end-to-end: `CinetpayModule` + thin REST client
+`PaymentCinetpay` (no SDK — the official PHP package is a 2020 PHP-5.6 release)
++ `ApiController` (`createcheckout` consumed by PlaceOrder's generic
+`payment_url`, `verifypayment` return with self-refreshing pending page,
+`notify` webhook, `successful`/`failed`/`cancel` pages) + `filesupdate/v100.sql`
+(gateway row `Mobile Money`, **inactive** + empty credentials) + registration in
+`front_main.php` (`modules` + `cinetpay/api/*` CSRF exemption).
+
+**Security doctrine (why this differs from the older gateway modules):**
+verify-first — neither the notify body nor the browser return is trusted, every
+applied status comes from `/v2/payment/check`; idempotent paid transition
+(replayed notifies and the notify/return race are no-ops; never downgrades);
+check-API-unreachable ⇒ webhook answers **503** so CinetPay retries; HMAC
+`x-token` validated constant-time when the Secret Key is configured (403 on
+forge); unique reference per attempt (`TFE{order_id}T{ts}` — CinetPay
+transaction ids are single-use); amount cross-checked before applying success;
+failed/cancelled leave the order draft/unpaid (no duplicate orders, no stock
+effects, retry allowed).
+
+**Credential exposure fixed while wiring it:** `interface/fetchpaymentmethod`
+attached FULL gateway credentials (attr1..attr9) to every checkout payload —
+for CinetPay that would have shipped the API key + HMAC secret to every device.
+Added `sanitizeServerOnlyCredentials()` (InterfaceController) and a `cinetpay`
+case returning nothing in `CPayments::getPaymentCredentialsPublic()`. The app
+needs zero CinetPay credentials (fully server-side redirect flow).
+
+**No app changes required:** PlaceOrder's generic `payment_url` + the existing
+`payment-callback` deep link cover the whole journey; the checkout shows the
+gateway automatically once active + enabled per merchant (`merchant_meta`).
+
+**Verified:** `php -l` clean on all new/modified files; standalone unit tests
+**28/28 green** (`php protected/modules/cinetpay/tests/run-tests.php`): HMAC
+accept/forge/tamper/absent-field vectors, verify-first status mapping
+(662→pending, 600→unknown⇒503), XOF/XAF amount rules, currency mapping.
+Controller flows (redirects, idempotent apply, 403/503) need the Yii runtime +
+DB → staging curl matrix in `docs/cinetpay-mobile-money.md`. Not deployed —
+owner applies v100.sql, sets credentials in the back-office, registers the
+notify URL in the CinetPay panel and runs one sandbox payment.
+
 ### 2026-07-26 — Expose `ai_assistant_enabled` to the customer app
 
 **Gap closed.** The `aichat` gateway shipped on 2026-07-22 and the app reads

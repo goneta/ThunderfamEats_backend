@@ -1,0 +1,13 @@
+Config lines required by the cinetpay module (already applied to
+protected/config/front_main.php in this repo — reference for new deployments):
+
+1) 'modules' array:
+
+		'cinetpay'=>array(),
+
+2) request > noCsrfValidationRoutes:
+
+				'cinetpay/api/*',
+
+3) Apply filesupdate/v100.sql (st_addons + st_payment_gateway rows), then set
+   the credentials from the back-office: Payment Gateway > Mobile Money.
