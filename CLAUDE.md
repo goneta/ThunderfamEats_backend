@@ -135,6 +135,34 @@ each area. Per-file docs: [`docs/README.md`](docs/README.md).
 
 ## Change Log
 
+### 2026-07-26 — Expose `ai_assistant_enabled` to the customer app
+
+**Gap closed.** The `aichat` gateway shipped on 2026-07-22 and the app reads
+`attributes_data.ai_assistant_enabled` to decide whether to use it
+(`MobileVue/src/api/assistant.js` → `hasGateway()`), but `getAttributes` never
+returned that key — so the assistant could never leave read-only mode, however
+the server was configured. `initSettings()` is a **whitelist**: a key absent from
+it is unavailable downstream, so exposing the flag took three edits, not one.
+
+- `protected/controllers/InterfaceCommon.php` — added `'ai_assistant_enabled'`
+  to the `initSettings()` option list.
+- `protected/controllers/InterfaceController.php` — `actiongetAttributes()` now
+  reads the option (next to `chat_enabled`) and casts it to a bool…
+- …and returns it as `attributes_data.ai_assistant_enabled`.
+
+**Defaults to false when the option row is absent**, so this is inert until the
+owner opts in — no behaviour change on any existing deployment. Turning it on is
+a single row (`merchant_id=0`, `option_name='ai_assistant_enabled'`,
+`option_value='1'`) and needs **no app release**; setting it back to `'0'`
+instantly returns the app to its deterministic read-only intents.
+
+Real conversational answers still require `TFE_AI_API_KEY` too: with the flag on
+but no key, `aichat` returns a non-`1` code and the app falls back. Enabling
+steps + verification curl: `docs/ai-gateway-and-firebase-token.md`.
+
+**Verified:** `php -l` (WampServer PHP 8.2) clean on both modified controllers.
+Not deployed — the owner applies the SQL row and the `k-config.php` keys.
+
 ### 2026-07-22 — Customer-app chat auth + AI assistant gateway (InterfaceController)
 
 **What was changed**

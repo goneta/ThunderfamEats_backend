@@ -94,11 +94,38 @@ The key never leaves the server. To add another provider, extend
 ### Enabling the app's full mode
 
 The app auto-upgrades from deterministic mode to the gateway when the backend
-advertises it. Add to the customer `getAttributes` payload (Options →
-front settings) a boolean the app reads as `ai_assistant_enabled` (see
-`MobileVue/src/api/assistant.js` → `hasGateway()`), then set it true. Until then
-the app keeps answering "where is my order?" / "my recent orders" with real
-order cards over existing read-only endpoints.
+advertises `ai_assistant_enabled` (see `MobileVue/src/api/assistant.js` →
+`hasGateway()`). **The plumbing is now in place** — `getAttributes` reads the
+option and returns the flag:
+
+- `InterfaceCommon::initSettings()` loads `ai_assistant_enabled` (that settings
+  list is a whitelist; a key absent from it is never available downstream).
+- `InterfaceController::actiongetAttributes()` casts it and returns
+  `attributes_data.ai_assistant_enabled`.
+
+All that remains is the option row. It defaults to **false** when absent, so the
+assistant stays read-only until you explicitly switch it on:
+
+```sql
+-- table prefix is DB_PREFIX from k-config.php (e.g. st_option)
+INSERT INTO st_option (merchant_id, option_name, option_value)
+VALUES (0, 'ai_assistant_enabled', '1');
+```
+
+Then verify (settings are cached — clear the cache or wait for expiry):
+
+```bash
+curl -s -X POST 'https://<host>/interface/getAttributes' \
+  -H 'Authorization: Bearer <APP_TOKEN>' -H 'Content-Type: application/json' -d '{}' \
+  | grep -o 'ai_assistant_enabled[^,]*'
+```
+
+Set it back to `'0'` to instantly fall the app back to its deterministic
+read-only intents — no app release needed either way.
+
+**Both conditions must hold** for real conversational answers: this flag *and*
+`TFE_AI_API_KEY` configured. With the flag on but no key, `aichat` returns a
+non-`1` code and the app falls back to the deterministic intents.
 
 ### Test
 

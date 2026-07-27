@@ -6564,6 +6564,13 @@ class InterfaceController extends InterfaceCommon
 			$chat_enabled = isset(Yii::app()->params['settings']['chat_enabled']) ? Yii::app()->params['settings']['chat_enabled'] : false;
 			$chat_enabled = $chat_enabled == 1 ? true : false;
 
+			/* Customer-app AI assistant. When true the app calls the server-side
+			   gateway (POST /interface/aichat); when false/absent it stays on its
+			   deterministic read-only intents. Also requires TFE_AI_API_KEY to be
+			   configured - see docs/ai-gateway-and-firebase-token.md. */
+			$ai_assistant_enabled = isset(Yii::app()->params['settings']['ai_assistant_enabled']) ? Yii::app()->params['settings']['ai_assistant_enabled'] : false;
+			$ai_assistant_enabled = $ai_assistant_enabled == 1 ? true : false;
+
 			$digitalwallet_enabled_topup = isset(Yii::app()->params['settings']['digitalwallet_enabled_topup']) ? Yii::app()->params['settings']['digitalwallet_enabled_topup'] : false;
 			$digitalwallet_enabled_topup = $digitalwallet_enabled_topup == 1 ? true : false;
 
@@ -6641,6 +6648,7 @@ class InterfaceController extends InterfaceCommon
 				'category_use_slide' => $category_use_slide,
 				'use_thresholds' => $use_thresholds,
 				'chat_enabled' => $chat_enabled,
+				'ai_assistant_enabled' => $ai_assistant_enabled,
 				'digitalwallet_enabled' => $digitalwallet_enabled,
 				'digitalwallet_enabled_topup' => $digitalwallet_enabled_topup,
 				'appversion_data' => [

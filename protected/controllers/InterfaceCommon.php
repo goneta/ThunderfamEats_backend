@@ -120,8 +120,8 @@ class InterfaceCommon extends CController
 			'points_expiry','enabled_website_ordering','whatsapp_use_api','login_method','signup_terms','signup_type','home_search_mode','location_default_country',
 			'location_searchtype','location_enabled_map_selection','enabled_guest','strict_to_wallet','app_enabled_google_login','app_enabled_fb_login','app_enabled_apple_login',
 			'app_google_client_id','app_apple_app_id','webpush_certificates','fb_app_id','app_facebook_client_token','default_language',
-			'google_maps_api_key_for_mobile','map_custom_style'
-	    ));		
+			'google_maps_api_key_for_mobile','map_custom_style','ai_assistant_enabled'
+	    ));
 	    
 		Yii::app()->params['settings'] = $settings;
 
